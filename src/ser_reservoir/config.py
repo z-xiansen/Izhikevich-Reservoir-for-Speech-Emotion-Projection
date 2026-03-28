@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 
@@ -72,6 +72,14 @@ class ExperimentConfig:
     tsne_learning_rate: float = 200.0
     tsne_n_iter: int = 1200
 
+    # Classifier
+    train_classifier: bool = True
+    classifier_validation_ratio: float = 0.2
+    classifier_model_path: Path = Path("results/reservoir_classifier.joblib")
+    classifier_metrics_path: Path = Path("results/classifier_metrics.yaml")
+    classifier_confusion_matrix_path: Path = Path("results/classifier_confusion_matrix.png")
+    classifier_predictions_path: Path = Path("results/classifier_validation_predictions.csv")
+
     # runtime
     verbose: bool = True
     save_model: bool = False
@@ -84,6 +92,14 @@ class ExperimentConfig:
         self.processed_dir = (self.workspace / self.processed_dir).resolve()
         self.results_dir = (self.workspace / self.results_dir).resolve()
         self.model_path = (self.workspace / self.model_path).resolve()
+        self.classifier_model_path = (self.workspace / self.classifier_model_path).resolve()
+        self.classifier_metrics_path = (self.workspace / self.classifier_metrics_path).resolve()
+        self.classifier_confusion_matrix_path = (
+            self.workspace / self.classifier_confusion_matrix_path
+        ).resolve()
+        self.classifier_predictions_path = (
+            self.workspace / self.classifier_predictions_path
+        ).resolve()
         if self.load_model_path is not None:
             self.load_model_path = (self.workspace / self.load_model_path).resolve()
         return self

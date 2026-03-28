@@ -11,6 +11,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from ser_reservoir import ExperimentConfig, run_pipeline
+from ser_reservoir.classifier import format_classifier_report
 
 
 def parse_args() -> argparse.Namespace:
@@ -46,6 +47,11 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Load an existing reservoir model before processing samples.",
     )
+    parser.add_argument(
+        "--no-classifier",
+        action="store_true",
+        help="Skip classifier training on the 800-D reservoir features.",
+    )
     parser.add_argument("--quiet", action="store_true")
     return parser.parse_args()
 
@@ -58,6 +64,7 @@ def main() -> None:
         frame_repeat=args.frame_repeat,
         input_gain=args.input_gain,
         verbose=not args.quiet,
+        train_classifier=not args.no_classifier,
         save_model=args.save_model,
         model_path=Path(args.model_path),
         load_model_path=Path(args.load_model) if args.load_model else None,
@@ -71,6 +78,9 @@ def main() -> None:
         cfg.max_samples_per_emotion = args.max_per_emotion
 
     summary = run_pipeline(cfg)
+    if summary.get("classifier", {}).get("enabled"):
+        print(format_classifier_report(summary["classifier"]))
+        print()
     print(json.dumps(summary, indent=2, ensure_ascii=False))
 
 

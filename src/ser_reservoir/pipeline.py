@@ -8,6 +8,7 @@ import yaml
 from tqdm import tqdm
 
 from .analysis import plot_embedding, run_tsne, save_states
+from .classifier import train_and_evaluate_classifier
 from .config import ExperimentConfig
 from .data import (
     collect_audio_samples,
@@ -53,6 +54,10 @@ def run_pipeline(cfg: ExperimentConfig) -> dict:
     plot_embedding(embedding, labels, cfg.tsne_plot_path)
     save_states(cfg.state_feature_path, state_matrix, embedding, labels, path_list)
 
+    classifier_summary: dict | None = None
+    if cfg.train_classifier:
+        classifier_summary = train_and_evaluate_classifier(state_matrix, labels, path_list, cfg)
+
     saved_model_path: Path | None = None
     if cfg.save_model:
         reservoir.save_model(cfg.model_path)
@@ -66,6 +71,7 @@ def run_pipeline(cfg: ExperimentConfig) -> dict:
         global_rates=global_rates,
         n_features=state_matrix.shape[1],
         saved_model_path=saved_model_path,
+        classifier_summary=classifier_summary,
     )
     _save_summary(cfg.metrics_path, summary)
     return summary
@@ -79,6 +85,7 @@ def _build_summary(
     global_rates: list[float],
     n_features: int,
     saved_model_path: Path | None,
+    classifier_summary: dict | None,
 ) -> dict:
     label_count = dict(sorted(Counter(labels).items(), key=lambda x: x[0]))
     res_stats = reservoir.stats()
@@ -108,6 +115,19 @@ def _build_summary(
                 str(saved_model_path) if saved_model_path is not None else None
             ),
         },
+        "classifier": (
+            classifier_summary
+            if classifier_summary is not None
+            else {
+                "enabled": False,
+                "outputs": {
+                    "classifier_model": None,
+                    "classifier_metrics": None,
+                    "confusion_matrix_plot": None,
+                    "validation_predictions": None,
+                },
+            }
+        ),
     }
 
 
