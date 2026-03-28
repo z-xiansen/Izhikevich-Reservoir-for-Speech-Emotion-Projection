@@ -1,0 +1,26 @@
+dataset_root: G:\启研计划\语音情绪识别任务的神经网络建模\data\raw\TESS
+num_samples: 2800
+label_distribution:
+  angry: 400
+  disgust: 400
+  fear: 400
+  happy: 400
+  neutral: 400
+  pleasant_surprise: 400
+  sad: 400
+num_state_features: 800
+mean_global_firing_rate: 0.009495905076245046
+std_global_firing_rate: 0.0020706079317202525
+reservoir:
+  n_neurons: 400
+  n_edges: 3227
+  excitatory_neurons: 320
+  inhibitory_neurons: 80
+  excitatory_edges: 2290
+  inhibitory_edges: 937
+outputs:
+  state_file: G:\启研计划\语音情绪识别任务的神经网络建模\data\processed\reservoir_states.npz
+  tsne_plot: G:\启研计划\语音情绪识别任务的神经网络建模\results\tsne_emotion_clusters.png
+  summary_yaml: G:\启研计划\语音情绪识别任务的神经网络建模\results\run_summary.yaml
+  loaded_model: null
+  saved_model: null
