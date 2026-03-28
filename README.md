@@ -1,7 +1,7 @@
 # Izhikevich Reservoir for Speech Emotion Projection (TESS)
 
-本项目实现了一个基于 Izhikevich 神经元模型的随机储备池系统，用于语音情绪识别（SER）的状态空间可视化。
-重点是观察不同情绪样本在高维神经动态状态上的自发分离能力。
+本项目实现了一个基于 Izhikevich 神经元模型的随机储备池系统，用于语音情绪识别（SER）任务的特征提取与分类。
+通过模拟生物类脑的神经动态，验证储备池学习在情绪识别中的可行性与有效性。
 
 ## 功能覆盖
 
@@ -15,6 +15,23 @@
 - 内在塑性（IP）调节偏置电流，维持边际混沌附近活性
 - 基于状态向量的 t-SNE 降维可视化
 - 基于 800 维状态向量的情绪分类器训练与验证（按情绪分层 80/20 切分）
+
+## 分类器说明
+
+当前项目默认使用一个轻量级基线分类器，对储备池输出的 `800` 维状态向量进行情绪分类：
+
+- 先使用 `StandardScaler` 对特征做标准化
+- 再使用 `LogisticRegression` 进行多分类训练
+
+这样设计的目的不是引入一个复杂分类头，而是先验证储备池提取出的状态特征本身是否具有良好的情绪可分性。
+对于当前这种固定长度、中高维的状态向量，逻辑回归训练速度快、结果稳定、解释也比较直接，适合作为 baseline。
+
+分类器的训练数据来自 `reservoir_states.npz` 中保存的：
+
+- `states`：每条语音对应的 `800` 维特征
+- `labels`：情绪标签
+
+默认按情绪分层做 `80%` 训练、`20%` 验证。
 
 ## 项目结构
 
@@ -308,3 +325,115 @@ $env:KAGGLE_KEY="your_api_key"
 - 若传入 `--load-model`，程序会直接加载外部模型文件，不再重新随机生成网络结构与突触连接；若不传，则从随机初始化的新模型开始运行。
 - 模型文件会保存关键动力学/可塑性配置的元信息，避免把不兼容的配置静默加载到旧模型上。
 - 若你后续需要接入岭回归或线性探针，可直接使用 `reservoir_states.npz` 的 `states` 与 `labels`。
+
+## 运行结果报告
+
+下面给出一次全量运行的示例结果。
+该次运行使用了完整 TESS 数据集，共 `2800` 条语音样本，每种情绪 `400` 条；分类器按情绪分层切分为每类 `320` 条训练、`80` 条验证。
+从结果看，储备池生成的 `800` 维状态向量具有很强的情绪区分能力，验证集分类准确率达到 `0.9964`，主要混淆仅出现在 `fear` 与 `happy` 之间，各有 `1` 条样本被错分。
+
+关键结果摘要：
+
+- 数据集规模：`2800` 条样本，`7` 类情绪，每类 `400` 条
+- 储备池规模：`400` 个神经元，`3227` 条连接
+- 状态特征维度：`800`
+- 平均全局发放率：`0.010204`
+- t-SNE 最终 KL divergence：`0.921806`
+- 分类器：`StandardScaler + LogisticRegression`
+- 验证集准确率：`0.9964`
+- 验证集 Macro-F1：`0.9964`
+- 主要混淆：`fear -> happy: 1`，`happy -> fear: 1`
+
+终端输出节选如下：
+
+```text
+Reservoir simulation: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2800/2800 [03:11<00:00, 14.64sample/s]
+[t-SNE] Computing 91 nearest neighbors...
+[t-SNE] Indexed 2800 samples in 0.002s...
+[t-SNE] Computed neighbors for 2800 samples in 1.661s...
+[t-SNE] Computed conditional probabilities for sample 1000 / 2800
+[t-SNE] Computed conditional probabilities for sample 2000 / 2800
+[t-SNE] Computed conditional probabilities for sample 2800 / 2800
+[t-SNE] Mean sigma: 5.577257
+[t-SNE] KL divergence after 250 iterations with early exaggeration: 62.907555
+[t-SNE] KL divergence after 1200 iterations: 0.921806
+Classifier Report
+Model: standardized_logistic_regression
+Split: train=2240  validation=560
+Validation: accuracy=0.9964  balanced_accuracy=0.9964  macro_f1=0.9964
+
+Per-class Metrics
+label              precision  recall  f1      support
+-----------------  ---------  ------  ------  -------
+angry              1.0000     1.0000  1.0000  80
+disgust            1.0000     1.0000  1.0000  80
+fear               0.9875     0.9875  0.9875  80
+happy              0.9875     0.9875  0.9875  80
+neutral            1.0000     1.0000  1.0000  80
+pleasant_surprise  1.0000     1.0000  1.0000  80
+sad                1.0000     1.0000  1.0000  80
+
+Main Confusions:
+- fear -> happy: 1
+- happy -> fear: 1
+```
+
+该次运行对应的结构化结果摘要如下：
+
+```yaml
+dataset_root: G:\Izhikevich Reservoir for Speech Emotion Projection\data\raw\TESS
+num_samples: 2800
+label_distribution:
+  angry: 400
+  disgust: 400
+  fear: 400
+  happy: 400
+  neutral: 400
+  pleasant_surprise: 400
+  sad: 400
+num_state_features: 800
+mean_global_firing_rate: 0.010204106108618102
+std_global_firing_rate: 0.000282512674132369
+reservoir:
+  n_neurons: 400
+  n_edges: 3227
+  excitatory_neurons: 320
+  inhibitory_neurons: 80
+  excitatory_edges: 2290
+  inhibitory_edges: 937
+outputs:
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\data\processed\reservoir_states.npz
+  tsne_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\results\tsne_emotion_clusters.png
+  summary_yaml: G:\Izhikevich Reservoir for Speech Emotion Projection\results\run_summary.yaml
+  loaded_model: G:\Izhikevich Reservoir for Speech Emotion Projection\results\reservoir_model.npz
+  saved_model: G:\Izhikevich Reservoir for Speech Emotion Projection\results\reservoir_model.npz
+classifier:
+  enabled: true
+  model_type: standardized_logistic_regression
+  train_samples: 2240
+  validation_samples: 560
+  train_distribution:
+    angry: 320
+    disgust: 320
+    fear: 320
+    happy: 320
+    neutral: 320
+    pleasant_surprise: 320
+    sad: 320
+  validation_distribution:
+    angry: 80
+    disgust: 80
+    fear: 80
+    happy: 80
+    neutral: 80
+    pleasant_surprise: 80
+    sad: 80
+  validation_accuracy: 0.9964285714285714
+  validation_balanced_accuracy: 0.9964285714285713
+  validation_macro_f1: 0.9964285714285713
+  outputs:
+    classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\results\reservoir_classifier.joblib
+    classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\results\classifier_metrics.yaml
+    confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\results\classifier_confusion_matrix.png
+    validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\results\classifier_validation_predictions.csv
+```
