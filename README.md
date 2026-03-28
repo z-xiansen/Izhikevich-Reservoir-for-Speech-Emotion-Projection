@@ -1,7 +1,7 @@
 # Izhikevich Reservoir for Speech Emotion Projection (TESS)
 
 本项目实现了一个基于 Izhikevich 神经元模型的随机储备池系统，用于语音情绪识别（SER）的状态空间可视化。
-重点是观察不同情绪样本在高维神经动态状态上的自发分离能力，而不是训练分类器。
+重点是观察不同情绪样本在高维神经动态状态上的自发分离能力。
 
 ## 功能覆盖
 
