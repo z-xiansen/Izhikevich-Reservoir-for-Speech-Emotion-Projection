@@ -52,14 +52,46 @@
 └─ results/
 ```
 
-## 环境与安装（虚拟环境）
+## 环境与安装
+
+本项目提供两种安装方式：
+
+- `conda` / `mamba`：使用仓库中的 `environment.yml` 创建完整环境
+- `pip`：使用仓库中的 `requirements.txt` 安装 Python 依赖
+
+推荐优先使用 `conda` 或 `mamba`，因为仓库已经提供了环境定义文件，复现更直接。
+
+### 方式一：使用 `environment.yml`（推荐）
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+conda env create -f environment.yml
+conda activate torch
+```
+
+如果环境已经存在，需要按文件内容更新，可以使用：
+
+```powershell
+conda env update -f environment.yml --prune
+conda activate torch
+```
+
+如果你使用的是 `mamba`，对应命令为：
+
+```powershell
+mamba env create -f environment.yml
+mamba activate torch
+```
+
+### 方式二：使用 `requirements.txt`
+
+如果你已经有一个可用的 Python 环境，也可以直接安装 `requirements.txt` 中列出的依赖：
+
+```powershell
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
+
+建议使用 Python `3.11`。
 
 ## Kaggle 凭证（可选但推荐）
 
@@ -85,14 +117,14 @@ $env:KAGGLE_KEY="your_api_key"
 如果你想先查看脚本支持哪些参数，可以直接运行：
 
 ```powershell
-.\.venv\Scripts\python .\run_ser_experiment.py --help
-.\.venv\Scripts\python .\train_classifier_from_states.py --help
+python .\run_ser_experiment.py --help
+python .\train_classifier_from_states.py --help
 ```
 
 说明：
 
 - 形如 `--no-limit`、`--save-model`、`--quiet` 这种参数是开关，写上就表示启用，不需要再跟 `true/false`
-- 形如 `--seed 7`、`--model-path results/x.npz` 这种参数后面需要跟值
+- 形如 `--seed 7`、`--model-path results/models` 这种参数后面需要跟值
 
 ### 主实验脚本：`run_ser_experiment.py`
 
@@ -110,7 +142,7 @@ $env:KAGGLE_KEY="your_api_key"
 快速运行，使用默认采样限制：
 
 ```powershell
-.\.venv\Scripts\python .\run_ser_experiment.py
+python .\run_ser_experiment.py
 ```
 
 默认配置含义：
@@ -123,7 +155,7 @@ $env:KAGGLE_KEY="your_api_key"
 全量样本运行：
 
 ```powershell
-.\.venv\Scripts\python .\run_ser_experiment.py --no-limit
+python .\run_ser_experiment.py --no-limit
 ```
 
 全量 TESS 下当前数据规模是：
@@ -140,13 +172,15 @@ $env:KAGGLE_KEY="your_api_key"
 常见命令组合：
 
 ```powershell
-.\.venv\Scripts\python .\run_ser_experiment.py --save-model
-.\.venv\Scripts\python .\run_ser_experiment.py --no-limit --save-model
-.\.venv\Scripts\python .\run_ser_experiment.py --no-limit --load-model results/reservoir_model.npz
-.\.venv\Scripts\python .\run_ser_experiment.py --load-model results/reservoir_model.npz --save-model --model-path results/reservoir_model_next.npz
-.\.venv\Scripts\python .\run_ser_experiment.py --max-samples 560 --max-per-emotion 80 --frame-repeat 2 --input-gain 14
-.\.venv\Scripts\python .\run_ser_experiment.py --no-limit --no-classifier
-.\.venv\Scripts\python .\run_ser_experiment.py --no-limit --quiet
+python .\run_ser_experiment.py --save-model
+python .\run_ser_experiment.py --no-limit --save-model
+python .\run_ser_experiment.py --no-limit --load-model
+python .\run_ser_experiment.py --load-model --save-model
+python .\run_ser_experiment.py --load-model results/models/reservoir_model_20260329_120000.npz
+python .\run_ser_experiment.py --save-model --model-path results/models
+python .\run_ser_experiment.py --max-samples 560 --max-per-emotion 80 --frame-repeat 2 --input-gain 14
+python .\run_ser_experiment.py --no-limit --no-classifier
+python .\run_ser_experiment.py --no-limit --quiet
 ```
 
 各参数说明如下。
@@ -195,19 +229,26 @@ $env:KAGGLE_KEY="your_api_key"
 
 - 运行结束后保存当前储备池模型
 - 两个写法是同一个参数的别名，效果相同
+- 若未额外指定路径，模型会默认保存到 `results/models/`，并自动在文件名后追加时间戳
 - 示例：`--save-model`
 
 `--model-path` 或 `--checkpoint-path`
 
-- 指定储备池模型保存路径
-- 默认值为 `results/reservoir_model.npz`
-- 示例：`--model-path results/reservoir_model_next.npz`
+- 指定储备池模型保存目录或保存文件名前缀
+- 若传目录，例如 `results/models`，程序会自动生成带时间戳的文件名
+- 若传文件名，例如 `results/models/my_model.npz`，程序会保存为 `my_model_时间戳.npz`
+- 未显式传入时，默认保存目录为 `results/models/`
+- 示例：`--model-path results/models`
+- 示例：`--model-path results/models/my_model.npz`
 
 `--load-model` 或 `--load-checkpoint`
 
 - 加载已有储备池模型，而不是重新随机生成网络结构和权重
+- 如果只写 `--load-model` 而不跟路径，程序会默认加载 `results/models/` 中最新的模型文件
+- 也可以显式指定某一个模型文件，或传入一个目录并自动选择其中最新的模型
 - 两个写法是同一个参数的别名，效果相同
-- 示例：`--load-model results/reservoir_model.npz`
+- 示例：`--load-model`
+- 示例：`--load-model results/models/reservoir_model_20260329_120000.npz`
 
 `--no-classifier`
 
@@ -235,7 +276,7 @@ $env:KAGGLE_KEY="your_api_key"
 最常用命令：
 
 ```powershell
-.\.venv\Scripts\python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz
+python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz
 ```
 
 这个脚本适合下面这些场景：
@@ -247,9 +288,9 @@ $env:KAGGLE_KEY="your_api_key"
 常见命令组合：
 
 ```powershell
-.\.venv\Scripts\python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz
-.\.venv\Scripts\python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz --validation-ratio 0.25
-.\.venv\Scripts\python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz --model-path results/my_classifier.joblib --metrics-path results/my_metrics.yaml
+python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz
+python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz --validation-ratio 0.25
+python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz --model-path results/my_classifier.joblib --metrics-path results/my_metrics.yaml
 ```
 
 各参数说明如下。
@@ -303,8 +344,8 @@ $env:KAGGLE_KEY="your_api_key"
 对应命令：
 
 ```powershell
-.\.venv\Scripts\python .\run_ser_experiment.py --no-limit
-.\.venv\Scripts\python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz
+python .\run_ser_experiment.py --no-limit
+python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz
 ```
 
 ## 输出
@@ -316,13 +357,13 @@ $env:KAGGLE_KEY="your_api_key"
 - `results/classifier_metrics.yaml`：训练/验证划分、准确率、Macro-F1、逐类指标、混淆矩阵
 - `results/classifier_confusion_matrix.png`：验证集混淆矩阵可视化
 - `results/classifier_validation_predictions.csv`：验证集逐样本预测结果
-- `results/reservoir_model.npz`：可选，保存网络结构、突触权重、输入映射与内在偏置（通过 `--save-model` 生成）
+- `results/models/*.npz`：可选，保存网络结构、突触权重、输入映射与内在偏置（通过 `--save-model` 生成，文件名自动追加时间戳）
 
 ## 说明
 
 - 当前实现默认保留跨样本的长期塑性（STDP + IP），并在每个样本前重置短期动力学状态。
 - 分类器默认使用当前运行得到的 `reservoir_states.npz` 同源状态向量进行训练，先做标准化，再训练多分类逻辑回归。
-- 若传入 `--load-model`，程序会直接加载外部模型文件，不再重新随机生成网络结构与突触连接；若不传，则从随机初始化的新模型开始运行。
+- 若传入 `--load-model`，程序会加载已有模型；若只写 `--load-model` 不跟路径，则默认读取 `results/models/` 下最新模型；若不传，则从随机初始化的新模型开始运行。
 - 模型文件会保存关键动力学/可塑性配置的元信息，避免把不兼容的配置静默加载到旧模型上。
 - 若你后续需要接入岭回归或线性探针，可直接使用 `reservoir_states.npz` 的 `states` 与 `labels`。
 
@@ -381,7 +422,7 @@ Main Confusions:
 该次运行对应的结构化结果摘要如下：
 
 ```yaml
-dataset_root: G:\Izhikevich Reservoir for Speech Emotion Projection\data\raw\TESS
+dataset_root: data/raw/TESS
 num_samples: 2800
 label_distribution:
   angry: 400
@@ -402,11 +443,11 @@ reservoir:
   excitatory_edges: 2290
   inhibitory_edges: 937
 outputs:
-  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\data\processed\reservoir_states.npz
-  tsne_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\results\tsne_emotion_clusters.png
-  summary_yaml: G:\Izhikevich Reservoir for Speech Emotion Projection\results\run_summary.yaml
-  loaded_model: G:\Izhikevich Reservoir for Speech Emotion Projection\results\reservoir_model.npz
-  saved_model: G:\Izhikevich Reservoir for Speech Emotion Projection\results\reservoir_model.npz
+  state_file: data/processed/reservoir_states.npz
+  tsne_plot: results/tsne_emotion_clusters.png
+  summary_yaml: results/run_summary.yaml
+  loaded_model: results/models/reservoir_model_20260329_120000.npz
+  saved_model: results/models/reservoir_model_20260329_120000.npz
 classifier:
   enabled: true
   model_type: standardized_logistic_regression
@@ -432,8 +473,8 @@ classifier:
   validation_balanced_accuracy: 0.9964285714285713
   validation_macro_f1: 0.9964285714285713
   outputs:
-    classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\results\reservoir_classifier.joblib
-    classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\results\classifier_metrics.yaml
-    confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\results\classifier_confusion_matrix.png
-    validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\results\classifier_validation_predictions.csv
+    classifier_model: results/reservoir_classifier.joblib
+    classifier_metrics: results/classifier_metrics.yaml
+    confusion_matrix_plot: results/classifier_confusion_matrix.png
+    validation_predictions: results/classifier_validation_predictions.csv
 ```

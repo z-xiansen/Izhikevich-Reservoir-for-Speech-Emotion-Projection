@@ -83,7 +83,7 @@ class ExperimentConfig:
     # runtime
     verbose: bool = True
     save_model: bool = False
-    model_path: Path = Path("results/reservoir_model.npz")
+    model_path: Path = Path("results/models")
     load_model_path: Path | None = None
 
     def resolve(self) -> "ExperimentConfig":

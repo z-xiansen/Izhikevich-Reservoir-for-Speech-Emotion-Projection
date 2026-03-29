@@ -18,9 +18,9 @@ validation_distribution:
   neutral: 80
   pleasant_surprise: 80
   sad: 80
-validation_accuracy: 0.9964285714285714
-validation_balanced_accuracy: 0.9964285714285713
-validation_macro_f1: 0.9964285714285713
+validation_accuracy: 0.9946428571428572
+validation_balanced_accuracy: 0.9946428571428572
+validation_macro_f1: 0.9946426478712895
 per_class_metrics:
   angry:
     precision: 1.0
@@ -33,14 +33,14 @@ per_class_metrics:
     f1-score: 1.0
     support: 80.0
   fear:
-    precision: 0.9875
-    recall: 0.9875
-    f1-score: 0.9875
+    precision: 0.9873417721518988
+    recall: 0.975
+    f1-score: 0.9811320754716981
     support: 80.0
   happy:
-    precision: 0.9875
+    precision: 0.9753086419753086
     recall: 0.9875
-    f1-score: 0.9875
+    f1-score: 0.9813664596273292
     support: 80.0
   neutral:
     precision: 1.0
@@ -57,16 +57,16 @@ per_class_metrics:
     recall: 1.0
     f1-score: 1.0
     support: 80.0
-  accuracy: 0.9964285714285714
+  accuracy: 0.9946428571428572
   macro avg:
-    precision: 0.9964285714285713
-    recall: 0.9964285714285713
-    f1-score: 0.9964285714285713
+    precision: 0.9946643448753153
+    recall: 0.9946428571428572
+    f1-score: 0.9946426478712895
     support: 560.0
   weighted avg:
-    precision: 0.9964285714285714
-    recall: 0.9964285714285714
-    f1-score: 0.9964285714285714
+    precision: 0.9946643448753154
+    recall: 0.9946428571428572
+    f1-score: 0.9946426478712896
     support: 560.0
 labels:
 - angry
@@ -93,8 +93,8 @@ confusion_matrix:
   - 0
 - - 0
   - 0
-  - 79
-  - 1
+  - 78
+  - 2
   - 0
   - 0
   - 0

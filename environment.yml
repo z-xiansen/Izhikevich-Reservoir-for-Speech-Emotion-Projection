@@ -1,0 +1,21 @@
+name: torch
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - numpy>=2.0
+  - scipy>=1.13
+  - scikit-learn>=1.5
+  - matplotlib>=3.9
+  - seaborn>=0.13
+  - librosa>=0.11
+  - soundfile>=0.13
+  - pyarrow>=18
+  - pyyaml>=6.0
+  - tqdm>=4.66
+  - joblib>=1.4
+  - huggingface_hub>=0.27
+  - kaggle>=1.6
+  - pip:
+      - kagglehub>=0.3
