@@ -54,6 +54,7 @@ class ExperimentConfig:
     w_inh_min: float = -2.5
 
     # STP (TM model)
+    enable_stp: bool = True
     stp_u_exc: float = 0.22
     stp_tau_d_exc: float = 700.0
     stp_tau_f_exc: float = 50.0
@@ -62,6 +63,7 @@ class ExperimentConfig:
     stp_tau_f_inh: float = 760.0
 
     # Intrinsic plasticity (edge-of-chaos tuning)
+    enable_intrinsic_plasticity: bool = True
     ip_lr: float = 0.0012
     ip_target_rate: float = 0.045
     ip_bias_min: float = -4.0
@@ -74,6 +76,7 @@ class ExperimentConfig:
 
     # Classifier
     train_classifier: bool = True
+    classifier_kind: str = "logistic_regression"
     classifier_validation_ratio: float = 0.2
     classifier_model_path: Path = Path("results/reservoir_classifier.joblib")
     classifier_metrics_path: Path = Path("results/classifier_metrics.yaml")

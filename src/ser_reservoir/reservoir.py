@@ -9,6 +9,7 @@ import numpy as np
 from .config import ExperimentConfig
 
 _MODEL_FORMAT = "ser_reservoir_model_v1"
+_MISSING = object()
 _VALIDATED_CFG_FIELDS = (
     "n_mfcc",
     "dt_ms",
@@ -27,10 +28,12 @@ _VALIDATED_CFG_FIELDS = (
     "stp_u_inh",
     "stp_tau_d_inh",
     "stp_tau_f_inh",
+    "enable_stp",
     "ip_lr",
     "ip_target_rate",
     "ip_bias_min",
     "ip_bias_max",
+    "enable_intrinsic_plasticity",
 )
 
 
@@ -260,7 +263,9 @@ class IzhikevichReservoir:
 
         mismatches: list[str] = []
         for field in _VALIDATED_CFG_FIELDS:
-            expected = stored_cfg.get(field)
+            expected = stored_cfg.get(field, _MISSING)
+            if expected is _MISSING:
+                continue
             actual = getattr(cfg, field)
             if isinstance(expected, float) or isinstance(actual, float):
                 if not np.isclose(float(expected), float(actual)):
@@ -312,7 +317,8 @@ class IzhikevichReservoir:
             self.v[spikes] = self.c[spikes]
             self.recovery_u[spikes] = self.recovery_u[spikes] + self.d[spikes]
 
-        self._update_intrinsic_plasticity(spikes)
+        if self.cfg.enable_intrinsic_plasticity:
+            self._update_intrinsic_plasticity(spikes)
         self._update_stdp(spikes)
         self._update_stp_and_syn_current(spikes)
         return spikes
@@ -357,19 +363,28 @@ class IzhikevichReservoir:
             self.post_trace[spike_idx] += 1.0
 
     def _update_stp_and_syn_current(self, spikes: np.ndarray) -> None:
-        dt = self.cfg.dt_ms
-        self.stp_u += ((self.stp_U - self.stp_u) * dt / self.stp_tau_f).astype(np.float32)
-        self.stp_x += ((1.0 - self.stp_x) * dt / self.stp_tau_d).astype(np.float32)
-
         syn_in = np.zeros(self.n, dtype=np.float32)
         active = spikes[self.pre_idx]
-        if active.any():
-            self.stp_u[active] += (self.stp_U[active] * (1.0 - self.stp_u[active])).astype(np.float32)
-            eff = self.w[active] * self.stp_u[active] * self.stp_x[active]
-            self.stp_x[active] *= (1.0 - self.stp_u[active]).astype(np.float32)
+        if self.cfg.enable_stp:
+            dt = self.cfg.dt_ms
+            self.stp_u += ((self.stp_U - self.stp_u) * dt / self.stp_tau_f).astype(np.float32)
+            self.stp_x += ((1.0 - self.stp_x) * dt / self.stp_tau_d).astype(np.float32)
+
+            if active.any():
+                self.stp_u[active] += (
+                    self.stp_U[active] * (1.0 - self.stp_u[active])
+                ).astype(np.float32)
+                eff = self.w[active] * self.stp_u[active] * self.stp_x[active]
+                self.stp_x[active] *= (1.0 - self.stp_u[active]).astype(np.float32)
+                syn_in += np.bincount(
+                    self.post_idx[active],
+                    weights=eff.astype(np.float64),
+                    minlength=self.n,
+                ).astype(np.float32)
+        elif active.any():
             syn_in += np.bincount(
                 self.post_idx[active],
-                weights=eff.astype(np.float64),
+                weights=self.w[active].astype(np.float64),
                 minlength=self.n,
             ).astype(np.float32)
 

@@ -13,6 +13,7 @@ if str(SRC) not in sys.path:
 from ser_reservoir import ExperimentConfig
 from ser_reservoir.classifier import (
     format_classifier_report,
+    supported_classifier_kinds,
     train_classifier_from_saved_states,
 )
 
@@ -28,6 +29,13 @@ def parse_args() -> argparse.Namespace:
         help="Path to a saved reservoir_states.npz file.",
     )
     parser.add_argument("--seed", type=int, default=7)
+    parser.add_argument(
+        "--classifier",
+        type=str,
+        default="logistic_regression",
+        choices=supported_classifier_kinds(),
+        help="Which classifier head to train on top of the saved state vectors.",
+    )
     parser.add_argument(
         "--validation-ratio",
         type=float,
@@ -66,6 +74,7 @@ def main() -> None:
     cfg = ExperimentConfig(
         workspace=ROOT,
         seed=args.seed,
+        classifier_kind=args.classifier,
         classifier_validation_ratio=args.validation_ratio,
         classifier_model_path=Path(args.model_path),
         classifier_metrics_path=Path(args.metrics_path),

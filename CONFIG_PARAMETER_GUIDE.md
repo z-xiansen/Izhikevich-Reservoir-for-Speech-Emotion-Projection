@@ -2,7 +2,7 @@
 
 ## 概述
 
-本文档总结了 `src/ser_reservoir/config.py` 中所有配置参数的含义和作用。该配置类用于**脉冲神经网络水库**进行语音情绪识别（SER）任务。
+本文档总结了 `src/ser_reservoir/config.py` 中当前版本所有配置参数的含义和作用。该配置类用于**脉冲神经网络储备池**进行语音情绪识别（SER）任务，也支持 `STP / IP` 的开关式消融配置。
 
 ---
 
@@ -16,7 +16,9 @@
 7. [STP 短期可塑性](#stp-短期可塑性)
 8. [内在可塑性](#内在可塑性)
 9. [t-SNE 可视化](#tsne-可视化)
-10. [类方法和属性](#类方法和属性)
+10. [分类器与结果输出](#分类器与结果输出)
+11. [运行时与模型保存](#运行时与模型保存)
+12. [类方法和属性](#类方法和属性)
 
 ---
 
@@ -24,7 +26,7 @@
 
 ```python
 from __future__ import annotations
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 ```
 
@@ -32,7 +34,6 @@ from pathlib import Path
 |------|------|
 | `__future__.annotations` | 启用 Python 3.10+ 的延迟注解评估，允许使用类名作为类型提示 |
 | `dataclass` | 装饰器，自动生成 `__init__`、`__repr__` 等方法 |
-| `field` | 用于定义数据类字段的高级配置 |
 | `Path` | 跨平台路径操作，避免硬编码路径分隔符 |
 
 ---
@@ -81,7 +82,13 @@ max_samples_per_emotion: int | None = 70
 | `max_samples` | 420 | 最多加载 420 个样本（`None` = 无限制） |
 | `max_samples_per_emotion` | 70 | 每种情绪最多 70 个样本，确保数据平衡 |
 
-**设计理由**：$420 = 6 \text{ 种情绪} \times 70 \text{ 个样本}$，平衡数据集
+**设计理由**：默认设置会先限制每类最多 `70` 个样本，再把总量限制在 `420` 以内，用于在运行速度和类别覆盖之间取得平衡。
+**当前实现说明**：
+
+- 数据集中实际按 `label_order` 处理 `7` 类情绪
+- 采样时先对每类应用 `max_samples_per_emotion`
+- 如果合并后总数仍超过 `max_samples`，再做一次随机截断
+- 因此默认配置更准确地说是“**每类最多 70，总数最多 420**”，而不是严格固定每类相同数量
 
 ---
 
@@ -272,6 +279,7 @@ w_inh_min: float = -2.5
 ## STP 短期可塑性
 
 ```python
+enable_stp: bool = True
 stp_u_exc: float = 0.22
 stp_tau_d_exc: float = 700.0
 stp_tau_f_exc: float = 50.0
@@ -287,6 +295,16 @@ stp_tau_f_inh: float = 760.0
 其中：
 - $u(t)$：利用率（促进过程）
 - $x(t)$：可用资源（抑制过程）
+
+### 开关参数
+
+| 参数 | 默认值 | 含义 |
+|------|--------|------|
+| `enable_stp` | `True` | 是否启用 Tsodyks-Markram 短期可塑性 |
+
+- 当 `enable_stp = True` 时，突触输入按 `w × u × x` 计算
+- 当 `enable_stp = False` 时，不再更新 `u/x` 动态，突触输入直接使用静态权重 `w`
+- 这个开关适合做“去除 STP”消融实验
 
 ### 兴奋性突触
 
@@ -322,6 +340,7 @@ stp_tau_f_inh: float = 760.0
 ## 内在可塑性
 
 ```python
+enable_intrinsic_plasticity: bool = True
 ip_lr: float = 0.0012
 ip_target_rate: float = 0.045
 ip_bias_min: float = -4.0
@@ -336,6 +355,7 @@ ip_bias_max: float = 4.0
 
 | 参数 | 值 | 含义 |
 |------|-----|------|
+| `enable_intrinsic_plasticity` | `True` | 是否启用内在偏置的在线调节 |
 | `ip_lr` | 0.0012 | 学习率（0.12%，很慢） |
 | `ip_target_rate` | 0.045 | 目标放电率（4.5%） |
 | `ip_bias_min` | -4.0 | 偏置的最小值 |
@@ -353,6 +373,13 @@ bias = clip(bias, ip_bias_min, ip_bias_max)
 - 如果神经元**放电太频繁** → 降低偏置
 - 如果神经元**放电太稀疏** → 提高偏置
 - 最终稳定在 **4.5% 的目标放电率**
+
+### 开关行为
+
+- 当 `enable_intrinsic_plasticity = True` 时，每个时间步都会根据当前放电情况更新 `intrinsic_bias`
+- 当 `enable_intrinsic_plasticity = False` 时，不再执行偏置更新
+- 对于新建模型，这意味着偏置会保持初始值 `0`
+- 对于加载模型，这意味着已有偏置会被保留，但不会继续自适应更新
 
 ### 边界混沌状态
 
@@ -406,6 +433,62 @@ t-SNE 降维
 
 ---
 
+## 分类器与结果输出
+
+```python
+train_classifier: bool = True
+classifier_validation_ratio: float = 0.2
+classifier_model_path: Path = Path("results/reservoir_classifier.joblib")
+classifier_metrics_path: Path = Path("results/classifier_metrics.yaml")
+classifier_confusion_matrix_path: Path = Path("results/classifier_confusion_matrix.png")
+classifier_predictions_path: Path = Path("results/classifier_validation_predictions.csv")
+```
+
+### 参数详解
+
+| 参数 | 默认值 | 含义 |
+|------|--------|------|
+| `train_classifier` | `True` | 是否在状态提取后训练分类器 |
+| `classifier_validation_ratio` | `0.2` | 分层验证集比例 |
+| `classifier_model_path` | `results/reservoir_classifier.joblib` | 分类器模型保存路径 |
+| `classifier_metrics_path` | `results/classifier_metrics.yaml` | 分类器指标保存路径 |
+| `classifier_confusion_matrix_path` | `results/classifier_confusion_matrix.png` | 混淆矩阵图片保存路径 |
+| `classifier_predictions_path` | `results/classifier_validation_predictions.csv` | 验证集逐样本预测保存路径 |
+
+### 作用说明
+
+- 当 `train_classifier = False` 时，仍会保留状态提取、t-SNE 和运行摘要
+- 当 `train_classifier = True` 时，会使用 `StandardScaler + LogisticRegression` 完成分类
+- 如果你在做消融实验，可以把这些路径定向到独立目录，避免覆盖主实验结果
+
+---
+
+## 运行时与模型保存
+
+```python
+verbose: bool = True
+save_model: bool = False
+model_path: Path = Path("results/models")
+load_model_path: Path | None = None
+```
+
+### 参数详解
+
+| 参数 | 默认值 | 含义 |
+|------|--------|------|
+| `verbose` | `True` | 是否显示进度条和 t-SNE 过程信息 |
+| `save_model` | `False` | 是否在运行结束后保存储备池模型 |
+| `model_path` | `results/models` | 模型保存目录或文件路径 |
+| `load_model_path` | `None` | 已有模型加载路径；为 `None` 时使用新随机储备池 |
+
+### 作用说明
+
+- `save_model` 主要用于复用同一个储备池结构与已学习权重
+- `load_model_path` 用于从历史 `.npz` 模型恢复网络结构、权重、输入映射和偏置
+- 当前模型元数据会校验关键动力学/可塑性配置，避免把不兼容参数静默加载到旧模型上
+
+---
+
 ## 类方法和属性
 
 ### 1. resolve() 方法
@@ -418,6 +501,17 @@ def resolve(self) -> "ExperimentConfig":
     self.raw_data_dir = (self.workspace / self.raw_data_dir).resolve()
     self.processed_dir = (self.workspace / self.processed_dir).resolve()
     self.results_dir = (self.workspace / self.results_dir).resolve()
+    self.model_path = (self.workspace / self.model_path).resolve()
+    self.classifier_model_path = (self.workspace / self.classifier_model_path).resolve()
+    self.classifier_metrics_path = (self.workspace / self.classifier_metrics_path).resolve()
+    self.classifier_confusion_matrix_path = (
+        self.workspace / self.classifier_confusion_matrix_path
+    ).resolve()
+    self.classifier_predictions_path = (
+        self.workspace / self.classifier_predictions_path
+    ).resolve()
+    if self.load_model_path is not None:
+        self.load_model_path = (self.workspace / self.load_model_path).resolve()
     return self
 ```
 
@@ -471,7 +565,7 @@ def label_order(self) -> list[str]:
     return ["angry", "disgust", "fear", "happy", 
             "neutral", "pleasant_surprise", "sad"]
 ```
-**作用**：确保情绪标签顺序一致（6 类情感）
+**作用**：确保情绪标签顺序一致（7 类情绪）
 
 ### 3. as_dict() 方法
 
@@ -507,8 +601,8 @@ def as_dict(self) -> dict:
     ├─ 400 个 Izhikevich 神经元 (dt_ms, v_thresh...)
     ├─ 3227 条调制突触 (base_conn_prob, distance_lambda...)
     ├─ STDP 学习 (stdp_a_plus, stdp_tau_pre...)
-    ├─ STP 动态 (stp_u_exc, stp_tau_d_exc...)
-    └─ 内在可塑性调谐 (ip_lr, ip_target_rate...)
+    ├─ STP 动态 (enable_stp, stp_u_exc, stp_tau_d_exc...)
+    └─ 内在可塑性调谐 (enable_intrinsic_plasticity, ip_lr, ip_target_rate...)
     ↓
 提取特征 [N, 800]
     ├─ 前 400 维：平均膜电位
@@ -516,7 +610,7 @@ def as_dict(self) -> dict:
     ↓
 t-SNE 降维 [N, 2] (tsne_perplexity, tsne_learning_rate...)
     ↓
-可视化 + 情绪聚类
+可视化 + 情绪聚类 + 分类器评估
 ```
 
 ---
@@ -544,7 +638,7 @@ t-SNE 降维 [N, 2] (tsne_perplexity, tsne_learning_rate...)
 ### 约束范围
 - **权重**：兴奋 [0, 2.0]，抑制 [-2.5, 0]
 - **偏置**：[-4.0, 4.0]
-- **样本**：最多 420 个（70 个/情绪）
+- **样本**：默认每类最多 70，总数最多 420
 
 ---
 
@@ -558,4 +652,26 @@ t-SNE 降维 [N, 2] (tsne_perplexity, tsne_learning_rate...)
 | 提高时间分辨率 | ↓ `hop_length` (256 → 128) |
 | 增加频谱细节 | ↑ `n_mfcc` (40 → 80) |
 | 加快 t-SNE | ↑ `tsne_learning_rate` (200 → 300) |
+| 做 STP 消融 | `enable_stp = False` |
+| 做 IP 消融 | `enable_intrinsic_plasticity = False` |
+
+---
+
+## 消融实验建议
+
+如果你要做 `STP / IP` 对比实验，推荐不要手工反复改主脚本，而是直接使用仓库里的独立脚本：
+
+```powershell
+python .\experiments\stp_ip_ablation\run_ablation.py
+python .\experiments\stp_ip_ablation\run_ablation.py --no-limit
+```
+
+该脚本会自动对比：
+
+- `baseline`
+- `no_stp`
+- `no_ip`
+- `no_stp_no_ip`
+
+并把各条件的状态文件、分类指标和汇总表保存到 `experiments/stp_ip_ablation/outputs/`。
 

@@ -1,0 +1,134 @@
+enabled: true
+classifier_kind: nearest_centroid
+model_type: standardized_nearest_centroid
+train_samples: 2240
+validation_samples: 560
+train_distribution:
+  angry: 320
+  disgust: 320
+  fear: 320
+  happy: 320
+  neutral: 320
+  pleasant_surprise: 320
+  sad: 320
+validation_distribution:
+  angry: 80
+  disgust: 80
+  fear: 80
+  happy: 80
+  neutral: 80
+  pleasant_surprise: 80
+  sad: 80
+validation_accuracy: 0.5321428571428571
+validation_balanced_accuracy: 0.5321428571428571
+validation_macro_f1: 0.5262745523969586
+per_class_metrics:
+  angry:
+    precision: 0.056338028169014086
+    recall: 0.05
+    f1-score: 0.052980132450331126
+    support: 80.0
+  disgust:
+    precision: 0.6483516483516484
+    recall: 0.7375
+    f1-score: 0.6900584795321637
+    support: 80.0
+  fear:
+    precision: 0.532608695652174
+    recall: 0.6125
+    f1-score: 0.5697674418604651
+    support: 80.0
+  happy:
+    precision: 0.6862745098039216
+    recall: 0.4375
+    f1-score: 0.5343511450381679
+    support: 80.0
+  neutral:
+    precision: 0.8292682926829268
+    recall: 0.85
+    f1-score: 0.8395061728395061
+    support: 80.0
+  pleasant_surprise:
+    precision: 0.4367816091954023
+    recall: 0.475
+    f1-score: 0.4550898203592814
+    support: 80.0
+  sad:
+    precision: 0.5232558139534884
+    recall: 0.5625
+    f1-score: 0.5421686746987951
+    support: 80.0
+  accuracy: 0.5321428571428571
+  macro avg:
+    precision: 0.530411228258368
+    recall: 0.5321428571428571
+    f1-score: 0.5262745523969586
+    support: 560.0
+  weighted avg:
+    precision: 0.530411228258368
+    recall: 0.5321428571428571
+    f1-score: 0.5262745523969586
+    support: 560.0
+labels:
+- angry
+- disgust
+- fear
+- happy
+- neutral
+- pleasant_surprise
+- sad
+confusion_matrix:
+- - 4
+  - 2
+  - 40
+  - 1
+  - 6
+  - 16
+  - 11
+- - 0
+  - 59
+  - 0
+  - 0
+  - 0
+  - 2
+  - 19
+- - 23
+  - 0
+  - 49
+  - 7
+  - 1
+  - 0
+  - 0
+- - 16
+  - 0
+  - 1
+  - 35
+  - 1
+  - 26
+  - 1
+- - 6
+  - 0
+  - 0
+  - 2
+  - 68
+  - 2
+  - 2
+- - 22
+  - 3
+  - 2
+  - 6
+  - 1
+  - 38
+  - 8
+- - 0
+  - 27
+  - 0
+  - 0
+  - 5
+  - 3
+  - 45
+outputs:
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_model.joblib
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_metrics.yaml
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_validation_predictions.csv

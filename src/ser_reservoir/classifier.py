@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import yaml
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, RidgeClassifier
 from sklearn.metrics import (
     accuracy_score,
     balanced_accuracy_score,
@@ -17,10 +17,35 @@ from sklearn.metrics import (
     confusion_matrix,
     f1_score,
 )
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import NearestCentroid
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from .config import ExperimentConfig
+
+
+_CLASSIFIER_ALIASES = {
+    "logistic_regression": "logistic_regression",
+    "logistic": "logistic_regression",
+    "lr": "logistic_regression",
+    "nearest_centroid": "nearest_centroid",
+    "centroid": "nearest_centroid",
+    "nc": "nearest_centroid",
+    "gaussian_nb": "gaussian_nb",
+    "gnb": "gaussian_nb",
+    "naive_bayes": "gaussian_nb",
+    "ridge_classifier": "ridge_classifier",
+    "ridge": "ridge_classifier",
+    "rc": "ridge_classifier",
+}
+
+_CLASSIFIER_LABELS = {
+    "logistic_regression": "standardized_logistic_regression",
+    "nearest_centroid": "standardized_nearest_centroid",
+    "gaussian_nb": "standardized_gaussian_nb",
+    "ridge_classifier": "standardized_ridge_classifier",
+}
 
 
 def load_saved_states(path: Path) -> tuple[np.ndarray, list[str], list[str]]:
@@ -56,28 +81,110 @@ def train_and_evaluate_classifier(
     y = np.asarray(labels, dtype=object)
     split = stratified_holdout_split(y, validation_ratio=cfg.classifier_validation_ratio, seed=cfg.seed)
 
+    return train_and_evaluate_classifier_with_split(states, labels, paths, split, cfg)
+
+
+def train_classifier_from_saved_states(
+    state_path: Path,
+    cfg: ExperimentConfig,
+) -> dict:
+    states, labels, paths = load_saved_states(state_path)
+    return train_and_evaluate_classifier(states, labels, paths, cfg)
+
+
+def train_and_evaluate_classifier_with_split(
+    states: np.ndarray,
+    labels: list[str],
+    paths: list[str],
+    split: dict[str, np.ndarray],
+    cfg: ExperimentConfig,
+) -> dict:
+    if states.ndim != 2:
+        raise ValueError(f"Classifier expects a 2D state matrix, got {states.shape}")
+    if states.shape[0] != len(labels) or len(labels) != len(paths):
+        raise ValueError("States, labels, and paths must describe the same number of samples.")
+
+    y = np.asarray(labels, dtype=object)
     x_train = states[split["train_idx"]]
     y_train = y[split["train_idx"]]
     x_val = states[split["val_idx"]]
     y_val = y[split["val_idx"]]
     val_paths = [paths[i] for i in split["val_idx"].tolist()]
 
-    clf = Pipeline(
-        steps=[
-            ("scaler", StandardScaler()),
-            (
-                "classifier",
-                LogisticRegression(
-                    max_iter=4000,
-                    solver="lbfgs",
-                    random_state=cfg.seed,
-                ),
-            ),
-        ]
-    )
+    classifier_kind = normalize_classifier_kind(cfg.classifier_kind)
+    clf = build_classifier_pipeline(classifier_kind, cfg.seed)
     clf.fit(x_train, y_train)
     y_pred = clf.predict(x_val)
 
+    metrics = build_classifier_metrics(
+        y=y,
+        y_train=y_train,
+        y_val=y_val,
+        y_pred=y_pred,
+        x_train=x_train,
+        x_val=x_val,
+        cfg=cfg,
+    )
+
+    save_classifier_model(cfg.classifier_model_path, clf)
+    save_confusion_matrix_plot(
+        cfg.classifier_confusion_matrix_path,
+        np.asarray(metrics["confusion_matrix"], dtype=np.int32),
+        metrics["labels"],
+    )
+    save_validation_predictions(cfg.classifier_predictions_path, val_paths, y_val, y_pred)
+    save_classifier_metrics(cfg.classifier_metrics_path, metrics)
+    return metrics
+
+
+def normalize_classifier_kind(kind: str) -> str:
+    key = str(kind).strip().lower()
+    if key not in _CLASSIFIER_ALIASES:
+        supported = ", ".join(sorted(_CLASSIFIER_LABELS))
+        raise ValueError(f"Unsupported classifier kind {kind!r}. Choose from: {supported}.")
+    return _CLASSIFIER_ALIASES[key]
+
+
+def supported_classifier_kinds() -> list[str]:
+    return sorted(_CLASSIFIER_LABELS)
+
+
+def build_classifier_pipeline(kind: str, seed: int) -> Pipeline:
+    normalized = normalize_classifier_kind(kind)
+    estimator: object
+
+    if normalized == "logistic_regression":
+        estimator = LogisticRegression(
+            max_iter=4000,
+            solver="lbfgs",
+            random_state=seed,
+        )
+    elif normalized == "nearest_centroid":
+        estimator = NearestCentroid()
+    elif normalized == "gaussian_nb":
+        estimator = GaussianNB()
+    elif normalized == "ridge_classifier":
+        estimator = RidgeClassifier(random_state=seed)
+    else:
+        raise AssertionError(f"Unhandled classifier kind: {normalized}")
+
+    return Pipeline(
+        steps=[
+            ("scaler", StandardScaler()),
+            ("classifier", estimator),
+        ]
+    )
+
+
+def build_classifier_metrics(
+    y: np.ndarray,
+    y_train: np.ndarray,
+    y_val: np.ndarray,
+    y_pred: np.ndarray,
+    x_train: np.ndarray,
+    x_val: np.ndarray,
+    cfg: ExperimentConfig,
+) -> dict:
     label_set = set(y.tolist())
     labels_present = [label for label in cfg.label_order if label in label_set]
     cm = confusion_matrix(y_val, y_pred, labels=labels_present)
@@ -89,13 +196,11 @@ def train_and_evaluate_classifier(
         zero_division=0,
     )
 
-    save_classifier_model(cfg.classifier_model_path, clf)
-    save_confusion_matrix_plot(cfg.classifier_confusion_matrix_path, cm, labels_present)
-    save_validation_predictions(cfg.classifier_predictions_path, val_paths, y_val, y_pred)
-
-    metrics = {
+    classifier_kind = normalize_classifier_kind(cfg.classifier_kind)
+    return {
         "enabled": True,
-        "model_type": "standardized_logistic_regression",
+        "classifier_kind": classifier_kind,
+        "model_type": _CLASSIFIER_LABELS[classifier_kind],
         "train_samples": int(x_train.shape[0]),
         "validation_samples": int(x_val.shape[0]),
         "train_distribution": dict(sorted(Counter(y_train.tolist()).items())),
@@ -113,16 +218,6 @@ def train_and_evaluate_classifier(
             "validation_predictions": str(cfg.classifier_predictions_path),
         },
     }
-    save_classifier_metrics(cfg.classifier_metrics_path, metrics)
-    return metrics
-
-
-def train_classifier_from_saved_states(
-    state_path: Path,
-    cfg: ExperimentConfig,
-) -> dict:
-    states, labels, paths = load_saved_states(state_path)
-    return train_and_evaluate_classifier(states, labels, paths, cfg)
 
 
 def stratified_holdout_split(

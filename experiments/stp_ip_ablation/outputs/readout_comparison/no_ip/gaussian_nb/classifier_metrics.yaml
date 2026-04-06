@@ -1,0 +1,134 @@
+enabled: true
+classifier_kind: gaussian_nb
+model_type: standardized_gaussian_nb
+train_samples: 2240
+validation_samples: 560
+train_distribution:
+  angry: 320
+  disgust: 320
+  fear: 320
+  happy: 320
+  neutral: 320
+  pleasant_surprise: 320
+  sad: 320
+validation_distribution:
+  angry: 80
+  disgust: 80
+  fear: 80
+  happy: 80
+  neutral: 80
+  pleasant_surprise: 80
+  sad: 80
+validation_accuracy: 0.4607142857142857
+validation_balanced_accuracy: 0.4607142857142857
+validation_macro_f1: 0.390606662764419
+per_class_metrics:
+  angry:
+    precision: 0.2
+    recall: 0.0125
+    f1-score: 0.023529411764705882
+    support: 80.0
+  disgust:
+    precision: 0.5210084033613446
+    recall: 0.775
+    f1-score: 0.6231155778894473
+    support: 80.0
+  fear:
+    precision: 0.5083333333333333
+    recall: 0.7625
+    f1-score: 0.61
+    support: 80.0
+  happy:
+    precision: 0.40310077519379844
+    recall: 0.65
+    f1-score: 0.49760765550239233
+    support: 80.0
+  neutral:
+    precision: 0.448
+    recall: 0.7
+    f1-score: 0.5463414634146342
+    support: 80.0
+  pleasant_surprise:
+    precision: 1.0
+    recall: 0.075
+    f1-score: 0.13953488372093023
+    support: 80.0
+  sad:
+    precision: 0.35714285714285715
+    recall: 0.25
+    f1-score: 0.29411764705882354
+    support: 80.0
+  accuracy: 0.4607142857142857
+  macro avg:
+    precision: 0.4910836241473334
+    recall: 0.4607142857142857
+    f1-score: 0.390606662764419
+    support: 560.0
+  weighted avg:
+    precision: 0.49108362414733336
+    recall: 0.4607142857142857
+    f1-score: 0.3906066627644191
+    support: 560.0
+labels:
+- angry
+- disgust
+- fear
+- happy
+- neutral
+- pleasant_surprise
+- sad
+confusion_matrix:
+- - 1
+  - 3
+  - 42
+  - 7
+  - 17
+  - 0
+  - 10
+- - 0
+  - 62
+  - 0
+  - 0
+  - 3
+  - 0
+  - 15
+- - 2
+  - 0
+  - 61
+  - 16
+  - 1
+  - 0
+  - 0
+- - 2
+  - 0
+  - 7
+  - 52
+  - 18
+  - 0
+  - 1
+- - 0
+  - 0
+  - 4
+  - 16
+  - 56
+  - 0
+  - 4
+- - 0
+  - 4
+  - 6
+  - 38
+  - 20
+  - 6
+  - 6
+- - 0
+  - 50
+  - 0
+  - 0
+  - 10
+  - 0
+  - 20
+outputs:
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_model.joblib
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_metrics.yaml
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_validation_predictions.csv

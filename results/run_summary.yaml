@@ -9,8 +9,8 @@ label_distribution:
   pleasant_surprise: 400
   sad: 400
 num_state_features: 800
-mean_global_firing_rate: 0.009492805666564632
-std_global_firing_rate: 0.0020694995470093795
+mean_global_firing_rate: 0.009495646537522719
+std_global_firing_rate: 0.0020704310945364865
 reservoir:
   n_neurons: 400
   n_edges: 3227
@@ -23,9 +23,10 @@ outputs:
   tsne_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\results\tsne_emotion_clusters.png
   summary_yaml: G:\Izhikevich Reservoir for Speech Emotion Projection\results\run_summary.yaml
   loaded_model: null
-  saved_model: G:\Izhikevich Reservoir for Speech Emotion Projection\results\models\reservoir_model_20260329_202158.npz
+  saved_model: null
 classifier:
   enabled: true
+  classifier_kind: logistic_regression
   model_type: standardized_logistic_regression
   train_samples: 2240
   validation_samples: 560

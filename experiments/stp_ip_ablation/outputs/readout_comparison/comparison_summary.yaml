@@ -1,0 +1,2448 @@
+settings:
+  seed: 7
+  validation_ratio: 0.2
+  conditions:
+  - baseline
+  - no_stp
+  - no_ip
+  - no_stp_no_ip
+  classifiers:
+  - logistic_regression
+  - nearest_centroid
+  - gaussian_nb
+  - ridge_classifier
+  source: saved_reservoir_states_only
+results:
+- condition: baseline
+  description: STP + IP
+  classifier_kind: gaussian_nb
+  model_type: standardized_gaussian_nb
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.7857142857142857
+  validation_balanced_accuracy: 0.7857142857142856
+  validation_macro_f1: 0.7840713297762534
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\baseline\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\gaussian_nb\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\gaussian_nb\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\gaussian_nb\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\gaussian_nb\classifier_validation_predictions.csv
+- condition: baseline
+  description: STP + IP
+  classifier_kind: logistic_regression
+  model_type: standardized_logistic_regression
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9946428571428572
+  validation_balanced_accuracy: 0.9946428571428572
+  validation_macro_f1: 0.9946426478712895
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\baseline\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\logistic_regression\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\logistic_regression\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\logistic_regression\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\logistic_regression\classifier_validation_predictions.csv
+- condition: baseline
+  description: STP + IP
+  classifier_kind: nearest_centroid
+  model_type: standardized_nearest_centroid
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.8410714285714286
+  validation_balanced_accuracy: 0.8410714285714286
+  validation_macro_f1: 0.8387595241406235
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\baseline\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\nearest_centroid\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\nearest_centroid\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\nearest_centroid\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\nearest_centroid\classifier_validation_predictions.csv
+- condition: baseline
+  description: STP + IP
+  classifier_kind: ridge_classifier
+  model_type: standardized_ridge_classifier
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9910714285714286
+  validation_balanced_accuracy: 0.9910714285714286
+  validation_macro_f1: 0.9910599883924037
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\baseline\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\ridge_classifier\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\ridge_classifier\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\ridge_classifier\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\ridge_classifier\classifier_validation_predictions.csv
+- condition: no_ip
+  description: No IP
+  classifier_kind: gaussian_nb
+  model_type: standardized_gaussian_nb
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.4607142857142857
+  validation_balanced_accuracy: 0.4607142857142857
+  validation_macro_f1: 0.390606662764419
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_ip\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_validation_predictions.csv
+- condition: no_ip
+  description: No IP
+  classifier_kind: logistic_regression
+  model_type: standardized_logistic_regression
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9375
+  validation_balanced_accuracy: 0.9374999999999999
+  validation_macro_f1: 0.9374527741867051
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_ip\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\logistic_regression\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\logistic_regression\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\logistic_regression\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\logistic_regression\classifier_validation_predictions.csv
+- condition: no_ip
+  description: No IP
+  classifier_kind: nearest_centroid
+  model_type: standardized_nearest_centroid
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.5321428571428571
+  validation_balanced_accuracy: 0.5321428571428571
+  validation_macro_f1: 0.5262745523969586
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_ip\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_validation_predictions.csv
+- condition: no_ip
+  description: No IP
+  classifier_kind: ridge_classifier
+  model_type: standardized_ridge_classifier
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9375
+  validation_balanced_accuracy: 0.9374999999999999
+  validation_macro_f1: 0.937240952429795
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_ip\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\ridge_classifier\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\ridge_classifier\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\ridge_classifier\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\ridge_classifier\classifier_validation_predictions.csv
+- condition: no_stp
+  description: No STP
+  classifier_kind: gaussian_nb
+  model_type: standardized_gaussian_nb
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.8767857142857143
+  validation_balanced_accuracy: 0.8767857142857142
+  validation_macro_f1: 0.8761279161195824
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\gaussian_nb\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\gaussian_nb\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\gaussian_nb\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\gaussian_nb\classifier_validation_predictions.csv
+- condition: no_stp
+  description: No STP
+  classifier_kind: logistic_regression
+  model_type: standardized_logistic_regression
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9964285714285714
+  validation_balanced_accuracy: 0.9964285714285713
+  validation_macro_f1: 0.9964284319141932
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\logistic_regression\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\logistic_regression\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\logistic_regression\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\logistic_regression\classifier_validation_predictions.csv
+- condition: no_stp
+  description: No STP
+  classifier_kind: nearest_centroid
+  model_type: standardized_nearest_centroid
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9178571428571428
+  validation_balanced_accuracy: 0.9178571428571428
+  validation_macro_f1: 0.9155298036257402
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\nearest_centroid\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\nearest_centroid\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\nearest_centroid\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\nearest_centroid\classifier_validation_predictions.csv
+- condition: no_stp
+  description: No STP
+  classifier_kind: ridge_classifier
+  model_type: standardized_ridge_classifier
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9857142857142858
+  validation_balanced_accuracy: 0.9857142857142857
+  validation_macro_f1: 0.9856425025201396
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\ridge_classifier\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\ridge_classifier\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\ridge_classifier\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\ridge_classifier\classifier_validation_predictions.csv
+- condition: no_stp_no_ip
+  description: No STP + No IP
+  classifier_kind: gaussian_nb
+  model_type: standardized_gaussian_nb
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.6017857142857143
+  validation_balanced_accuracy: 0.6017857142857143
+  validation_macro_f1: 0.557263229364703
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp_no_ip\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\gaussian_nb\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\gaussian_nb\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\gaussian_nb\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\gaussian_nb\classifier_validation_predictions.csv
+- condition: no_stp_no_ip
+  description: No STP + No IP
+  classifier_kind: logistic_regression
+  model_type: standardized_logistic_regression
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9321428571428572
+  validation_balanced_accuracy: 0.9321428571428572
+  validation_macro_f1: 0.9324159428362814
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp_no_ip\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\logistic_regression\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\logistic_regression\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\logistic_regression\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\logistic_regression\classifier_validation_predictions.csv
+- condition: no_stp_no_ip
+  description: No STP + No IP
+  classifier_kind: nearest_centroid
+  model_type: standardized_nearest_centroid
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.6482142857142857
+  validation_balanced_accuracy: 0.6482142857142856
+  validation_macro_f1: 0.6351357881281636
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp_no_ip\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\nearest_centroid\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\nearest_centroid\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\nearest_centroid\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\nearest_centroid\classifier_validation_predictions.csv
+- condition: no_stp_no_ip
+  description: No STP + No IP
+  classifier_kind: ridge_classifier
+  model_type: standardized_ridge_classifier
+  num_samples: 2800
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.9535714285714286
+  validation_balanced_accuracy: 0.9535714285714286
+  validation_macro_f1: 0.9533971808851541
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp_no_ip\processed\reservoir_states.npz
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\ridge_classifier\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\ridge_classifier\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\ridge_classifier\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\ridge_classifier\classifier_validation_predictions.csv
+runs:
+- condition: baseline
+  description: STP + IP
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\baseline\processed\reservoir_states.npz
+  classifiers:
+  - classifier_kind: logistic_regression
+    metrics:
+      enabled: true
+      classifier_kind: logistic_regression
+      model_type: standardized_logistic_regression
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9946428571428572
+      validation_balanced_accuracy: 0.9946428571428572
+      validation_macro_f1: 0.9946426478712895
+      per_class_metrics:
+        angry:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        disgust:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        fear:
+          precision: 0.9873417721518988
+          recall: 0.975
+          f1-score: 0.9811320754716981
+          support: 80.0
+        happy:
+          precision: 0.9753086419753086
+          recall: 0.9875
+          f1-score: 0.9813664596273292
+          support: 80.0
+        neutral:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        pleasant_surprise:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        sad:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        accuracy: 0.9946428571428572
+        macro avg:
+          precision: 0.9946643448753153
+          recall: 0.9946428571428572
+          f1-score: 0.9946426478712895
+          support: 560.0
+        weighted avg:
+          precision: 0.9946643448753154
+          recall: 0.9946428571428572
+          f1-score: 0.9946426478712896
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 80
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 80
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 78
+        - 2
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 1
+        - 79
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 80
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\logistic_regression\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\logistic_regression\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\logistic_regression\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\logistic_regression\classifier_validation_predictions.csv
+  - classifier_kind: nearest_centroid
+    metrics:
+      enabled: true
+      classifier_kind: nearest_centroid
+      model_type: standardized_nearest_centroid
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.8410714285714286
+      validation_balanced_accuracy: 0.8410714285714286
+      validation_macro_f1: 0.8387595241406235
+      per_class_metrics:
+        angry:
+          precision: 1.0
+          recall: 0.5875
+          f1-score: 0.7401574803149606
+          support: 80.0
+        disgust:
+          precision: 0.7117117117117117
+          recall: 0.9875
+          f1-score: 0.8272251308900523
+          support: 80.0
+        fear:
+          precision: 0.8533333333333334
+          recall: 0.8
+          f1-score: 0.8258064516129032
+          support: 80.0
+        happy:
+          precision: 0.7368421052631579
+          recall: 0.875
+          f1-score: 0.8
+          support: 80.0
+        neutral:
+          precision: 0.9358974358974359
+          recall: 0.9125
+          f1-score: 0.9240506329113924
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.9393939393939394
+          recall: 0.775
+          f1-score: 0.8493150684931506
+          support: 80.0
+        sad:
+          precision: 0.8636363636363636
+          recall: 0.95
+          f1-score: 0.9047619047619048
+          support: 80.0
+        accuracy: 0.8410714285714286
+        macro avg:
+          precision: 0.8629735556051346
+          recall: 0.8410714285714286
+          f1-score: 0.8387595241406235
+          support: 560.0
+        weighted avg:
+          precision: 0.8629735556051346
+          recall: 0.8410714285714286
+          f1-score: 0.8387595241406235
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 47
+        - 31
+        - 0
+        - 2
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 79
+        - 0
+        - 0
+        - 0
+        - 0
+        - 1
+      - - 0
+        - 0
+        - 64
+        - 15
+        - 1
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 5
+        - 70
+        - 0
+        - 3
+        - 2
+      - - 0
+        - 0
+        - 3
+        - 2
+        - 73
+        - 1
+        - 1
+      - - 0
+        - 0
+        - 3
+        - 6
+        - 1
+        - 62
+        - 8
+      - - 0
+        - 1
+        - 0
+        - 0
+        - 3
+        - 0
+        - 76
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\nearest_centroid\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\nearest_centroid\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\nearest_centroid\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\nearest_centroid\classifier_validation_predictions.csv
+  - classifier_kind: gaussian_nb
+    metrics:
+      enabled: true
+      classifier_kind: gaussian_nb
+      model_type: standardized_gaussian_nb
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.7857142857142857
+      validation_balanced_accuracy: 0.7857142857142856
+      validation_macro_f1: 0.7840713297762534
+      per_class_metrics:
+        angry:
+          precision: 1.0
+          recall: 0.7
+          f1-score: 0.8235294117647058
+          support: 80.0
+        disgust:
+          precision: 0.8
+          recall: 1.0
+          f1-score: 0.8888888888888888
+          support: 80.0
+        fear:
+          precision: 0.8513513513513513
+          recall: 0.7875
+          f1-score: 0.8181818181818182
+          support: 80.0
+        happy:
+          precision: 0.7777777777777778
+          recall: 0.7
+          f1-score: 0.7368421052631579
+          support: 80.0
+        neutral:
+          precision: 0.5811965811965812
+          recall: 0.85
+          f1-score: 0.6903553299492385
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.8301886792452831
+          recall: 0.55
+          f1-score: 0.6616541353383458
+          support: 80.0
+        sad:
+          precision: 0.8295454545454546
+          recall: 0.9125
+          f1-score: 0.8690476190476191
+          support: 80.0
+        accuracy: 0.7857142857142857
+        macro avg:
+          precision: 0.8100085491594926
+          recall: 0.7857142857142856
+          f1-score: 0.7840713297762534
+          support: 560.0
+        weighted avg:
+          precision: 0.8100085491594925
+          recall: 0.7857142857142857
+          f1-score: 0.7840713297762535
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 56
+        - 20
+        - 4
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 80
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 63
+        - 16
+        - 1
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 7
+        - 56
+        - 17
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 68
+        - 9
+        - 3
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 24
+        - 44
+        - 12
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 7
+        - 0
+        - 73
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\gaussian_nb\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\gaussian_nb\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\gaussian_nb\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\gaussian_nb\classifier_validation_predictions.csv
+  - classifier_kind: ridge_classifier
+    metrics:
+      enabled: true
+      classifier_kind: ridge_classifier
+      model_type: standardized_ridge_classifier
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9910714285714286
+      validation_balanced_accuracy: 0.9910714285714286
+      validation_macro_f1: 0.9910599883924037
+      per_class_metrics:
+        angry:
+          precision: 1.0
+          recall: 0.9875
+          f1-score: 0.9937106918238994
+          support: 80.0
+        disgust:
+          precision: 0.9876543209876543
+          recall: 1.0
+          f1-score: 0.9937888198757764
+          support: 80.0
+        fear:
+          precision: 0.9873417721518988
+          recall: 0.975
+          f1-score: 0.9811320754716981
+          support: 80.0
+        happy:
+          precision: 0.9875
+          recall: 0.9875
+          f1-score: 0.9875
+          support: 80.0
+        neutral:
+          precision: 0.9876543209876543
+          recall: 1.0
+          f1-score: 0.9937888198757764
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.9876543209876543
+          recall: 1.0
+          f1-score: 0.9937888198757764
+          support: 80.0
+        sad:
+          precision: 1.0
+          recall: 0.9875
+          f1-score: 0.9937106918238994
+          support: 80.0
+        accuracy: 0.9910714285714286
+        macro avg:
+          precision: 0.9911149621592659
+          recall: 0.9910714285714286
+          f1-score: 0.9910599883924037
+          support: 560.0
+        weighted avg:
+          precision: 0.9911149621592661
+          recall: 0.9910714285714286
+          f1-score: 0.9910599883924036
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 79
+        - 1
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 80
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 78
+        - 1
+        - 1
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 1
+        - 79
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 1
+        - 79
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\ridge_classifier\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\ridge_classifier\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\ridge_classifier\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\baseline\ridge_classifier\classifier_validation_predictions.csv
+- condition: no_stp
+  description: No STP
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp\processed\reservoir_states.npz
+  classifiers:
+  - classifier_kind: logistic_regression
+    metrics:
+      enabled: true
+      classifier_kind: logistic_regression
+      model_type: standardized_logistic_regression
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9964285714285714
+      validation_balanced_accuracy: 0.9964285714285713
+      validation_macro_f1: 0.9964284319141932
+      per_class_metrics:
+        angry:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        disgust:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        fear:
+          precision: 0.9876543209876543
+          recall: 1.0
+          f1-score: 0.9937888198757764
+          support: 80.0
+        happy:
+          precision: 1.0
+          recall: 0.9875
+          f1-score: 0.9937106918238994
+          support: 80.0
+        neutral:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        pleasant_surprise:
+          precision: 1.0
+          recall: 0.9875
+          f1-score: 0.9937106918238994
+          support: 80.0
+        sad:
+          precision: 0.9876543209876543
+          recall: 1.0
+          f1-score: 0.9937888198757764
+          support: 80.0
+        accuracy: 0.9964285714285714
+        macro avg:
+          precision: 0.9964726631393298
+          recall: 0.9964285714285713
+          f1-score: 0.9964284319141932
+          support: 560.0
+        weighted avg:
+          precision: 0.9964726631393298
+          recall: 0.9964285714285714
+          f1-score: 0.9964284319141931
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 80
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 80
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 80
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 1
+        - 79
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 79
+        - 1
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 80
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\logistic_regression\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\logistic_regression\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\logistic_regression\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\logistic_regression\classifier_validation_predictions.csv
+  - classifier_kind: nearest_centroid
+    metrics:
+      enabled: true
+      classifier_kind: nearest_centroid
+      model_type: standardized_nearest_centroid
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9178571428571428
+      validation_balanced_accuracy: 0.9178571428571428
+      validation_macro_f1: 0.9155298036257402
+      per_class_metrics:
+        angry:
+          precision: 1.0
+          recall: 0.6
+          f1-score: 0.75
+          support: 80.0
+        disgust:
+          precision: 0.7117117117117117
+          recall: 0.9875
+          f1-score: 0.8272251308900523
+          support: 80.0
+        fear:
+          precision: 0.9859154929577465
+          recall: 0.875
+          f1-score: 0.9271523178807947
+          support: 80.0
+        happy:
+          precision: 0.8777777777777778
+          recall: 0.9875
+          f1-score: 0.9294117647058824
+          support: 80.0
+        neutral:
+          precision: 0.9876543209876543
+          recall: 1.0
+          f1-score: 0.9937888198757764
+          support: 80.0
+        pleasant_surprise:
+          precision: 1.0
+          recall: 0.975
+          f1-score: 0.9873417721518988
+          support: 80.0
+        sad:
+          precision: 0.9876543209876543
+          recall: 1.0
+          f1-score: 0.9937888198757764
+          support: 80.0
+        accuracy: 0.9178571428571428
+        macro avg:
+          precision: 0.9358162320603636
+          recall: 0.9178571428571428
+          f1-score: 0.9155298036257402
+          support: 560.0
+        weighted avg:
+          precision: 0.9358162320603636
+          recall: 0.9178571428571428
+          f1-score: 0.9155298036257402
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 48
+        - 32
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 79
+        - 0
+        - 1
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 70
+        - 9
+        - 1
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 1
+        - 79
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 1
+        - 0
+        - 78
+        - 1
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 80
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\nearest_centroid\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\nearest_centroid\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\nearest_centroid\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\nearest_centroid\classifier_validation_predictions.csv
+  - classifier_kind: gaussian_nb
+    metrics:
+      enabled: true
+      classifier_kind: gaussian_nb
+      model_type: standardized_gaussian_nb
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.8767857142857143
+      validation_balanced_accuracy: 0.8767857142857142
+      validation_macro_f1: 0.8761279161195824
+      per_class_metrics:
+        angry:
+          precision: 1.0
+          recall: 0.7
+          f1-score: 0.8235294117647058
+          support: 80.0
+        disgust:
+          precision: 0.7647058823529411
+          recall: 0.975
+          f1-score: 0.8571428571428571
+          support: 80.0
+        fear:
+          precision: 0.9027777777777778
+          recall: 0.8125
+          f1-score: 0.8552631578947368
+          support: 80.0
+        happy:
+          precision: 0.8295454545454546
+          recall: 0.9125
+          f1-score: 0.8690476190476191
+          support: 80.0
+        neutral:
+          precision: 0.9726027397260274
+          recall: 0.8875
+          f1-score: 0.9281045751633987
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.8505747126436781
+          recall: 0.925
+          f1-score: 0.8862275449101796
+          support: 80.0
+        sad:
+          precision: 0.9024390243902439
+          recall: 0.925
+          f1-score: 0.9135802469135802
+          support: 80.0
+        accuracy: 0.8767857142857143
+        macro avg:
+          precision: 0.8889493702051604
+          recall: 0.8767857142857142
+          f1-score: 0.8761279161195824
+          support: 560.0
+        weighted avg:
+          precision: 0.8889493702051604
+          recall: 0.8767857142857143
+          f1-score: 0.8761279161195825
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 56
+        - 24
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 78
+        - 1
+        - 0
+        - 0
+        - 1
+        - 0
+      - - 0
+        - 0
+        - 65
+        - 15
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 5
+        - 73
+        - 0
+        - 2
+        - 0
+      - - 0
+        - 0
+        - 1
+        - 0
+        - 71
+        - 5
+        - 3
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 1
+        - 74
+        - 5
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 1
+        - 5
+        - 74
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\gaussian_nb\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\gaussian_nb\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\gaussian_nb\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\gaussian_nb\classifier_validation_predictions.csv
+  - classifier_kind: ridge_classifier
+    metrics:
+      enabled: true
+      classifier_kind: ridge_classifier
+      model_type: standardized_ridge_classifier
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9857142857142858
+      validation_balanced_accuracy: 0.9857142857142857
+      validation_macro_f1: 0.9856425025201396
+      per_class_metrics:
+        angry:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        disgust:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        fear:
+          precision: 0.9868421052631579
+          recall: 0.9375
+          f1-score: 0.9615384615384616
+          support: 80.0
+        happy:
+          precision: 0.9634146341463414
+          recall: 0.9875
+          f1-score: 0.9753086419753086
+          support: 80.0
+        neutral:
+          precision: 0.975609756097561
+          recall: 1.0
+          f1-score: 0.9876543209876543
+          support: 80.0
+        pleasant_surprise:
+          precision: 1.0
+          recall: 0.975
+          f1-score: 0.9873417721518988
+          support: 80.0
+        sad:
+          precision: 0.975609756097561
+          recall: 1.0
+          f1-score: 0.9876543209876543
+          support: 80.0
+        accuracy: 0.9857142857142858
+        macro avg:
+          precision: 0.9859251788006602
+          recall: 0.9857142857142857
+          f1-score: 0.9856425025201396
+          support: 560.0
+        weighted avg:
+          precision: 0.9859251788006602
+          recall: 0.9857142857142858
+          f1-score: 0.9856425025201397
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 80
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 80
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 75
+        - 3
+        - 2
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 1
+        - 79
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 78
+        - 2
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 0
+        - 80
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\ridge_classifier\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\ridge_classifier\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\ridge_classifier\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp\ridge_classifier\classifier_validation_predictions.csv
+- condition: no_ip
+  description: No IP
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_ip\processed\reservoir_states.npz
+  classifiers:
+  - classifier_kind: logistic_regression
+    metrics:
+      enabled: true
+      classifier_kind: logistic_regression
+      model_type: standardized_logistic_regression
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9375
+      validation_balanced_accuracy: 0.9374999999999999
+      validation_macro_f1: 0.9374527741867051
+      per_class_metrics:
+        angry:
+          precision: 0.8987341772151899
+          recall: 0.8875
+          f1-score: 0.8930817610062893
+          support: 80.0
+        disgust:
+          precision: 0.9743589743589743
+          recall: 0.95
+          f1-score: 0.9620253164556962
+          support: 80.0
+        fear:
+          precision: 0.9382716049382716
+          recall: 0.95
+          f1-score: 0.9440993788819876
+          support: 80.0
+        happy:
+          precision: 0.925
+          recall: 0.925
+          f1-score: 0.925
+          support: 80.0
+        neutral:
+          precision: 0.9875
+          recall: 0.9875
+          f1-score: 0.9875
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.8875
+          recall: 0.8875
+          f1-score: 0.8875
+          support: 80.0
+        sad:
+          precision: 0.9512195121951219
+          recall: 0.975
+          f1-score: 0.9629629629629629
+          support: 80.0
+        accuracy: 0.9375
+        macro avg:
+          precision: 0.937512038386794
+          recall: 0.9374999999999999
+          f1-score: 0.9374527741867051
+          support: 560.0
+        weighted avg:
+          precision: 0.937512038386794
+          recall: 0.9375
+          f1-score: 0.9374527741867051
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 71
+        - 0
+        - 4
+        - 1
+        - 0
+        - 3
+        - 1
+      - - 1
+        - 76
+        - 0
+        - 0
+        - 0
+        - 0
+        - 3
+      - - 3
+        - 0
+        - 76
+        - 0
+        - 1
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 74
+        - 0
+        - 6
+        - 0
+      - - 0
+        - 0
+        - 1
+        - 0
+        - 79
+        - 0
+        - 0
+      - - 4
+        - 0
+        - 0
+        - 5
+        - 0
+        - 71
+        - 0
+      - - 0
+        - 2
+        - 0
+        - 0
+        - 0
+        - 0
+        - 78
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\logistic_regression\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\logistic_regression\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\logistic_regression\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\logistic_regression\classifier_validation_predictions.csv
+  - classifier_kind: nearest_centroid
+    metrics:
+      enabled: true
+      classifier_kind: nearest_centroid
+      model_type: standardized_nearest_centroid
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.5321428571428571
+      validation_balanced_accuracy: 0.5321428571428571
+      validation_macro_f1: 0.5262745523969586
+      per_class_metrics:
+        angry:
+          precision: 0.056338028169014086
+          recall: 0.05
+          f1-score: 0.052980132450331126
+          support: 80.0
+        disgust:
+          precision: 0.6483516483516484
+          recall: 0.7375
+          f1-score: 0.6900584795321637
+          support: 80.0
+        fear:
+          precision: 0.532608695652174
+          recall: 0.6125
+          f1-score: 0.5697674418604651
+          support: 80.0
+        happy:
+          precision: 0.6862745098039216
+          recall: 0.4375
+          f1-score: 0.5343511450381679
+          support: 80.0
+        neutral:
+          precision: 0.8292682926829268
+          recall: 0.85
+          f1-score: 0.8395061728395061
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.4367816091954023
+          recall: 0.475
+          f1-score: 0.4550898203592814
+          support: 80.0
+        sad:
+          precision: 0.5232558139534884
+          recall: 0.5625
+          f1-score: 0.5421686746987951
+          support: 80.0
+        accuracy: 0.5321428571428571
+        macro avg:
+          precision: 0.530411228258368
+          recall: 0.5321428571428571
+          f1-score: 0.5262745523969586
+          support: 560.0
+        weighted avg:
+          precision: 0.530411228258368
+          recall: 0.5321428571428571
+          f1-score: 0.5262745523969586
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 4
+        - 2
+        - 40
+        - 1
+        - 6
+        - 16
+        - 11
+      - - 0
+        - 59
+        - 0
+        - 0
+        - 0
+        - 2
+        - 19
+      - - 23
+        - 0
+        - 49
+        - 7
+        - 1
+        - 0
+        - 0
+      - - 16
+        - 0
+        - 1
+        - 35
+        - 1
+        - 26
+        - 1
+      - - 6
+        - 0
+        - 0
+        - 2
+        - 68
+        - 2
+        - 2
+      - - 22
+        - 3
+        - 2
+        - 6
+        - 1
+        - 38
+        - 8
+      - - 0
+        - 27
+        - 0
+        - 0
+        - 5
+        - 3
+        - 45
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\nearest_centroid\classifier_validation_predictions.csv
+  - classifier_kind: gaussian_nb
+    metrics:
+      enabled: true
+      classifier_kind: gaussian_nb
+      model_type: standardized_gaussian_nb
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.4607142857142857
+      validation_balanced_accuracy: 0.4607142857142857
+      validation_macro_f1: 0.390606662764419
+      per_class_metrics:
+        angry:
+          precision: 0.2
+          recall: 0.0125
+          f1-score: 0.023529411764705882
+          support: 80.0
+        disgust:
+          precision: 0.5210084033613446
+          recall: 0.775
+          f1-score: 0.6231155778894473
+          support: 80.0
+        fear:
+          precision: 0.5083333333333333
+          recall: 0.7625
+          f1-score: 0.61
+          support: 80.0
+        happy:
+          precision: 0.40310077519379844
+          recall: 0.65
+          f1-score: 0.49760765550239233
+          support: 80.0
+        neutral:
+          precision: 0.448
+          recall: 0.7
+          f1-score: 0.5463414634146342
+          support: 80.0
+        pleasant_surprise:
+          precision: 1.0
+          recall: 0.075
+          f1-score: 0.13953488372093023
+          support: 80.0
+        sad:
+          precision: 0.35714285714285715
+          recall: 0.25
+          f1-score: 0.29411764705882354
+          support: 80.0
+        accuracy: 0.4607142857142857
+        macro avg:
+          precision: 0.4910836241473334
+          recall: 0.4607142857142857
+          f1-score: 0.390606662764419
+          support: 560.0
+        weighted avg:
+          precision: 0.49108362414733336
+          recall: 0.4607142857142857
+          f1-score: 0.3906066627644191
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 1
+        - 3
+        - 42
+        - 7
+        - 17
+        - 0
+        - 10
+      - - 0
+        - 62
+        - 0
+        - 0
+        - 3
+        - 0
+        - 15
+      - - 2
+        - 0
+        - 61
+        - 16
+        - 1
+        - 0
+        - 0
+      - - 2
+        - 0
+        - 7
+        - 52
+        - 18
+        - 0
+        - 1
+      - - 0
+        - 0
+        - 4
+        - 16
+        - 56
+        - 0
+        - 4
+      - - 0
+        - 4
+        - 6
+        - 38
+        - 20
+        - 6
+        - 6
+      - - 0
+        - 50
+        - 0
+        - 0
+        - 10
+        - 0
+        - 20
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\gaussian_nb\classifier_validation_predictions.csv
+  - classifier_kind: ridge_classifier
+    metrics:
+      enabled: true
+      classifier_kind: ridge_classifier
+      model_type: standardized_ridge_classifier
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9375
+      validation_balanced_accuracy: 0.9374999999999999
+      validation_macro_f1: 0.937240952429795
+      per_class_metrics:
+        angry:
+          precision: 0.9240506329113924
+          recall: 0.9125
+          f1-score: 0.9182389937106918
+          support: 80.0
+        disgust:
+          precision: 0.948051948051948
+          recall: 0.9125
+          f1-score: 0.9299363057324841
+          support: 80.0
+        fear:
+          precision: 0.9512195121951219
+          recall: 0.975
+          f1-score: 0.9629629629629629
+          support: 80.0
+        happy:
+          precision: 0.8850574712643678
+          recall: 0.9625
+          f1-score: 0.9221556886227545
+          support: 80.0
+        neutral:
+          precision: 0.9876543209876543
+          recall: 1.0
+          f1-score: 0.9937888198757764
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.9324324324324325
+          recall: 0.8625
+          f1-score: 0.8961038961038961
+          support: 80.0
+        sad:
+          precision: 0.9375
+          recall: 0.9375
+          f1-score: 0.9375
+          support: 80.0
+        accuracy: 0.9375
+        macro avg:
+          precision: 0.9379951882632739
+          recall: 0.9374999999999999
+          f1-score: 0.937240952429795
+          support: 560.0
+        weighted avg:
+          precision: 0.9379951882632739
+          recall: 0.9375
+          f1-score: 0.937240952429795
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 73
+        - 0
+        - 4
+        - 1
+        - 0
+        - 1
+        - 1
+      - - 0
+        - 73
+        - 0
+        - 2
+        - 0
+        - 1
+        - 4
+      - - 2
+        - 0
+        - 78
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 77
+        - 0
+        - 3
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+        - 0
+      - - 4
+        - 0
+        - 0
+        - 7
+        - 0
+        - 69
+        - 0
+      - - 0
+        - 4
+        - 0
+        - 0
+        - 1
+        - 0
+        - 75
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\ridge_classifier\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\ridge_classifier\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\ridge_classifier\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_ip\ridge_classifier\classifier_validation_predictions.csv
+- condition: no_stp_no_ip
+  description: No STP + No IP
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\no_stp_no_ip\processed\reservoir_states.npz
+  classifiers:
+  - classifier_kind: logistic_regression
+    metrics:
+      enabled: true
+      classifier_kind: logistic_regression
+      model_type: standardized_logistic_regression
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9321428571428572
+      validation_balanced_accuracy: 0.9321428571428572
+      validation_macro_f1: 0.9324159428362814
+      per_class_metrics:
+        angry:
+          precision: 0.8765432098765432
+          recall: 0.8875
+          f1-score: 0.8819875776397516
+          support: 80.0
+        disgust:
+          precision: 0.9615384615384616
+          recall: 0.9375
+          f1-score: 0.9493670886075949
+          support: 80.0
+        fear:
+          precision: 0.9146341463414634
+          recall: 0.9375
+          f1-score: 0.9259259259259259
+          support: 80.0
+        happy:
+          precision: 0.972972972972973
+          recall: 0.9
+          f1-score: 0.935064935064935
+          support: 80.0
+        neutral:
+          precision: 1.0
+          recall: 0.975
+          f1-score: 0.9873417721518988
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.8809523809523809
+          recall: 0.925
+          f1-score: 0.9024390243902439
+          support: 80.0
+        sad:
+          precision: 0.927710843373494
+          recall: 0.9625
+          f1-score: 0.9447852760736196
+          support: 80.0
+        accuracy: 0.9321428571428572
+        macro avg:
+          precision: 0.9334788592936166
+          recall: 0.9321428571428572
+          f1-score: 0.9324159428362814
+          support: 560.0
+        weighted avg:
+          precision: 0.9334788592936166
+          recall: 0.9321428571428572
+          f1-score: 0.9324159428362813
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 71
+        - 0
+        - 5
+        - 0
+        - 0
+        - 3
+        - 1
+      - - 0
+        - 75
+        - 0
+        - 0
+        - 0
+        - 0
+        - 5
+      - - 4
+        - 0
+        - 75
+        - 0
+        - 0
+        - 1
+        - 0
+      - - 2
+        - 0
+        - 0
+        - 72
+        - 0
+        - 6
+        - 0
+      - - 0
+        - 0
+        - 2
+        - 0
+        - 78
+        - 0
+        - 0
+      - - 4
+        - 0
+        - 0
+        - 2
+        - 0
+        - 74
+        - 0
+      - - 0
+        - 3
+        - 0
+        - 0
+        - 0
+        - 0
+        - 77
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\logistic_regression\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\logistic_regression\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\logistic_regression\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\logistic_regression\classifier_validation_predictions.csv
+  - classifier_kind: nearest_centroid
+    metrics:
+      enabled: true
+      classifier_kind: nearest_centroid
+      model_type: standardized_nearest_centroid
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.6482142857142857
+      validation_balanced_accuracy: 0.6482142857142856
+      validation_macro_f1: 0.6351357881281636
+      per_class_metrics:
+        angry:
+          precision: 0.1320754716981132
+          recall: 0.0875
+          f1-score: 0.10526315789473684
+          support: 80.0
+        disgust:
+          precision: 0.7647058823529411
+          recall: 0.8125
+          f1-score: 0.7878787878787878
+          support: 80.0
+        fear:
+          precision: 0.5368421052631579
+          recall: 0.6375
+          f1-score: 0.5828571428571429
+          support: 80.0
+        happy:
+          precision: 0.75
+          recall: 0.6375
+          f1-score: 0.6891891891891891
+          support: 80.0
+        neutral:
+          precision: 0.9367088607594937
+          recall: 0.925
+          f1-score: 0.9308176100628931
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.5227272727272727
+          recall: 0.575
+          f1-score: 0.5476190476190477
+          support: 80.0
+        sad:
+          precision: 0.75
+          recall: 0.8625
+          f1-score: 0.8023255813953488
+          support: 80.0
+        accuracy: 0.6482142857142857
+        macro avg:
+          precision: 0.6275799418287112
+          recall: 0.6482142857142856
+          f1-score: 0.6351357881281636
+          support: 560.0
+        weighted avg:
+          precision: 0.6275799418287112
+          recall: 0.6482142857142857
+          f1-score: 0.6351357881281637
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 7
+        - 10
+        - 37
+        - 2
+        - 2
+        - 17
+        - 5
+      - - 0
+        - 65
+        - 0
+        - 0
+        - 0
+        - 1
+        - 14
+      - - 18
+        - 0
+        - 51
+        - 8
+        - 2
+        - 1
+        - 0
+      - - 7
+        - 0
+        - 3
+        - 51
+        - 0
+        - 18
+        - 1
+      - - 6
+        - 0
+        - 0
+        - 0
+        - 74
+        - 0
+        - 0
+      - - 15
+        - 4
+        - 4
+        - 7
+        - 1
+        - 46
+        - 3
+      - - 0
+        - 6
+        - 0
+        - 0
+        - 0
+        - 5
+        - 69
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\nearest_centroid\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\nearest_centroid\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\nearest_centroid\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\nearest_centroid\classifier_validation_predictions.csv
+  - classifier_kind: gaussian_nb
+    metrics:
+      enabled: true
+      classifier_kind: gaussian_nb
+      model_type: standardized_gaussian_nb
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.6017857142857143
+      validation_balanced_accuracy: 0.6017857142857143
+      validation_macro_f1: 0.557263229364703
+      per_class_metrics:
+        angry:
+          precision: 0.14285714285714285
+          recall: 0.0125
+          f1-score: 0.022988505747126436
+          support: 80.0
+        disgust:
+          precision: 0.6190476190476191
+          recall: 0.8125
+          f1-score: 0.7027027027027027
+          support: 80.0
+        fear:
+          precision: 0.5169491525423728
+          recall: 0.7625
+          f1-score: 0.6161616161616161
+          support: 80.0
+        happy:
+          precision: 0.5254237288135594
+          recall: 0.775
+          f1-score: 0.6262626262626263
+          support: 80.0
+        neutral:
+          precision: 0.8235294117647058
+          recall: 0.875
+          f1-score: 0.8484848484848485
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.625
+          recall: 0.4375
+          f1-score: 0.5147058823529411
+          support: 80.0
+        sad:
+          precision: 0.6056338028169014
+          recall: 0.5375
+          f1-score: 0.5695364238410596
+          support: 80.0
+        accuracy: 0.6017857142857143
+        macro avg:
+          precision: 0.5512058368346145
+          recall: 0.6017857142857143
+          f1-score: 0.557263229364703
+          support: 560.0
+        weighted avg:
+          precision: 0.5512058368346145
+          recall: 0.6017857142857143
+          f1-score: 0.557263229364703
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 1
+        - 5
+        - 42
+        - 9
+        - 6
+        - 8
+        - 9
+      - - 0
+        - 65
+        - 0
+        - 0
+        - 0
+        - 2
+        - 13
+      - - 3
+        - 0
+        - 61
+        - 15
+        - 1
+        - 0
+        - 0
+      - - 1
+        - 0
+        - 7
+        - 62
+        - 1
+        - 8
+        - 1
+      - - 1
+        - 0
+        - 3
+        - 2
+        - 70
+        - 2
+        - 2
+      - - 1
+        - 4
+        - 5
+        - 30
+        - 2
+        - 35
+        - 3
+      - - 0
+        - 31
+        - 0
+        - 0
+        - 5
+        - 1
+        - 43
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\gaussian_nb\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\gaussian_nb\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\gaussian_nb\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\gaussian_nb\classifier_validation_predictions.csv
+  - classifier_kind: ridge_classifier
+    metrics:
+      enabled: true
+      classifier_kind: ridge_classifier
+      model_type: standardized_ridge_classifier
+      train_samples: 2240
+      validation_samples: 560
+      train_distribution:
+        angry: 320
+        disgust: 320
+        fear: 320
+        happy: 320
+        neutral: 320
+        pleasant_surprise: 320
+        sad: 320
+      validation_distribution:
+        angry: 80
+        disgust: 80
+        fear: 80
+        happy: 80
+        neutral: 80
+        pleasant_surprise: 80
+        sad: 80
+      validation_accuracy: 0.9535714285714286
+      validation_balanced_accuracy: 0.9535714285714286
+      validation_macro_f1: 0.9533971808851541
+      per_class_metrics:
+        angry:
+          precision: 0.9487179487179487
+          recall: 0.925
+          f1-score: 0.9367088607594937
+          support: 80.0
+        disgust:
+          precision: 0.9294117647058824
+          recall: 0.9875
+          f1-score: 0.9575757575757575
+          support: 80.0
+        fear:
+          precision: 0.9634146341463414
+          recall: 0.9875
+          f1-score: 0.9753086419753086
+          support: 80.0
+        happy:
+          precision: 0.926829268292683
+          recall: 0.95
+          f1-score: 0.9382716049382716
+          support: 80.0
+        neutral:
+          precision: 1.0
+          recall: 1.0
+          f1-score: 1.0
+          support: 80.0
+        pleasant_surprise:
+          precision: 0.935064935064935
+          recall: 0.9
+          f1-score: 0.9171974522292994
+          support: 80.0
+        sad:
+          precision: 0.9736842105263158
+          recall: 0.925
+          f1-score: 0.9487179487179487
+          support: 80.0
+        accuracy: 0.9535714285714286
+        macro avg:
+          precision: 0.9538746802077295
+          recall: 0.9535714285714286
+          f1-score: 0.9533971808851541
+          support: 560.0
+        weighted avg:
+          precision: 0.9538746802077295
+          recall: 0.9535714285714286
+          f1-score: 0.9533971808851541
+          support: 560.0
+      labels:
+      - angry
+      - disgust
+      - fear
+      - happy
+      - neutral
+      - pleasant_surprise
+      - sad
+      confusion_matrix:
+      - - 74
+        - 0
+        - 3
+        - 1
+        - 0
+        - 0
+        - 2
+      - - 0
+        - 79
+        - 0
+        - 1
+        - 0
+        - 0
+        - 0
+      - - 1
+        - 0
+        - 79
+        - 0
+        - 0
+        - 0
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 76
+        - 0
+        - 4
+        - 0
+      - - 0
+        - 0
+        - 0
+        - 0
+        - 80
+        - 0
+        - 0
+      - - 3
+        - 1
+        - 0
+        - 4
+        - 0
+        - 72
+        - 0
+      - - 0
+        - 5
+        - 0
+        - 0
+        - 0
+        - 1
+        - 74
+      outputs:
+        classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\ridge_classifier\classifier_model.joblib
+        classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\ridge_classifier\classifier_metrics.yaml
+        confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\ridge_classifier\classifier_confusion_matrix.png
+        validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\stp_ip_ablation\outputs\readout_comparison\no_stp_no_ip\ridge_classifier\classifier_validation_predictions.csv

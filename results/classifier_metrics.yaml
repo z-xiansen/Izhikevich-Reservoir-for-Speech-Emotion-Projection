@@ -1,4 +1,5 @@
 enabled: true
+classifier_kind: logistic_regression
 model_type: standardized_logistic_regression
 train_samples: 2240
 validation_samples: 560

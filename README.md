@@ -13,6 +13,7 @@
 - Izhikevich 动力学与阈值重置机制
 - STDP（双指数痕迹）与 STP（TM：`x/u`）
 - 内在塑性（IP）调节偏置电流，维持边际混沌附近活性
+- 支持 `STP / IP` 开关与独立消融实验脚本
 - 基于状态向量的 t-SNE 降维可视化
 - 基于 800 维状态向量的情绪分类器训练与验证（按情绪分层 80/20 切分）
 
@@ -39,6 +40,15 @@
 .
 ├─ run_ser_experiment.py
 ├─ train_classifier_from_states.py
+├─ experiments/
+│  └─ stp_ip_ablation/
+│     ├─ README.md
+│     ├─ run_ablation.py
+│     └─ outputs/
+│  └─ mfcc_direct_classification/
+│     ├─ README.md
+│     ├─ run_experiment.py
+│     └─ outputs/
 ├─ src/ser_reservoir
 │  ├─ config.py
 │  ├─ data.py
@@ -113,12 +123,20 @@ $env:KAGGLE_KEY="your_api_key"
 
 - `run_ser_experiment.py`：主实验入口，负责数据采样、MFCC 提取、储备池仿真、t-SNE 可视化、分类器训练、结果保存
 - `train_classifier_from_states.py`：独立分类器入口，只读取已经保存好的 `reservoir_states.npz` 来训练分类器
+- `experiments/stp_ip_ablation/run_ablation.py`：消融实验入口，自动对比 `baseline`、`no_stp`、`no_ip`、`no_stp_no_ip`
+- `experiments/stp_ip_ablation/run_readout_comparison.py`：直接读取各条件已保存的 `reservoir_states.npz`，比较多个分类读出器
+- `experiments/mfcc_direct_classification/run_experiment.py`：不经过储备池，直接用 MFCC 特征比较多个分类器，并与 reservoir baseline 对照
+- `experiments/mfcc_direct_classification/plot_tsne.py`：直接基于已缓存的 MFCC 特征生成 `t-SNE` 情绪聚类图
 
 如果你想先查看脚本支持哪些参数，可以直接运行：
 
 ```powershell
 python .\run_ser_experiment.py --help
 python .\train_classifier_from_states.py --help
+python .\experiments\stp_ip_ablation\run_ablation.py --help
+python .\experiments\stp_ip_ablation\run_readout_comparison.py --help
+python .\experiments\mfcc_direct_classification\run_experiment.py --help
+python .\experiments\mfcc_direct_classification\plot_tsne.py --help
 ```
 
 说明：
@@ -262,6 +280,108 @@ python .\run_ser_experiment.py --no-limit --quiet
 - 适合批量运行或不想看进度信息时使用
 - 示例：`--quiet`
 
+### 消融实验脚本：`experiments/stp_ip_ablation/run_ablation.py`
+
+这个脚本用于做 `STP / IP` 消融实验，会自动跑下面 4 组条件：
+
+- `baseline`：保留 `STP + IP`
+- `no_stp`：去除 `STP`
+- `no_ip`：去除 `IP`
+- `no_stp_no_ip`：同时去除 `STP` 和 `IP`
+
+每组条件都会独立完成：
+
+- 数据采样
+- MFCC 提取
+- 储备池状态提取
+- t-SNE 可视化
+- 分类器训练与验证
+
+常用命令如下：
+
+```powershell
+python .\experiments\stp_ip_ablation\run_ablation.py
+python .\experiments\stp_ip_ablation\run_ablation.py --no-limit
+python .\experiments\stp_ip_ablation\run_ablation.py --max-samples 560 --max-per-emotion 80 --quiet
+```
+
+参数含义与主实验脚本保持一致：
+
+- `--seed`：控制网络初始化、样本切分和实验随机性
+- `--max-samples`：限制总样本数
+- `--max-per-emotion`：限制每类样本数
+- `--no-limit`：使用全部样本
+- `--frame-repeat`：控制每帧 MFCC 注入次数
+- `--input-gain`：控制输入电流强度
+- `--quiet`：减少进度输出
+
+输出会统一保存到：
+
+```text
+experiments/stp_ip_ablation/outputs/
+```
+
+其中每个条件都有自己的独立目录，例如：
+
+- `experiments/stp_ip_ablation/outputs/baseline/results/`
+- `experiments/stp_ip_ablation/outputs/no_stp/results/`
+- `experiments/stp_ip_ablation/outputs/no_ip/results/`
+- `experiments/stp_ip_ablation/outputs/no_stp_no_ip/results/`
+
+同时还会额外汇总生成：
+
+- `experiments/stp_ip_ablation/outputs/comparison_metrics.csv`
+- `experiments/stp_ip_ablation/outputs/comparison_summary.yaml`
+- `experiments/stp_ip_ablation/outputs/comparison_report.md`
+- `experiments/stp_ip_ablation/outputs/comparison_metrics.png`
+
+如果你已经有各条件的状态文件，不想重新经过储备池，还可以直接比较不同读出器：
+
+```powershell
+python .\experiments\stp_ip_ablation\run_readout_comparison.py
+```
+
+默认会比较：
+
+- `logistic_regression`
+- `nearest_centroid`
+- `gaussian_nb`
+- `ridge_classifier`
+
+结果会保存到：
+
+- `experiments/stp_ip_ablation/outputs/readout_comparison/comparison_metrics.csv`
+- `experiments/stp_ip_ablation/outputs/readout_comparison/comparison_summary.yaml`
+- `experiments/stp_ip_ablation/outputs/readout_comparison/comparison_report.md`
+
+### 直接 MFCC 对比实验：`experiments/mfcc_direct_classification/run_experiment.py`
+
+这个脚本不经过储备池，而是直接对每条语音提取 MFCC，然后：
+
+- 将变长 MFCC 统一补齐到相同帧长
+- 展平成定长特征向量
+- 训练并比较多个分类读出器
+- 读取 reservoir baseline 结果并做差值对照
+- 默认额外生成直接 MFCC 特征的 `t-SNE` 图
+
+常用命令如下：
+
+```powershell
+python .\experiments\mfcc_direct_classification\run_experiment.py
+python .\experiments\mfcc_direct_classification\run_experiment.py --refresh-features
+python .\experiments\mfcc_direct_classification\run_experiment.py --classifiers logistic_regression ridge_classifier
+python .\experiments\mfcc_direct_classification\plot_tsne.py
+```
+
+结果会保存到：
+
+- `experiments/mfcc_direct_classification/outputs/processed/mfcc_flat_features.npz`
+- `experiments/mfcc_direct_classification/outputs/processed/mfcc_tsne_embedding.npz`
+- `experiments/mfcc_direct_classification/outputs/results/tsne_emotion_clusters.png`
+- `experiments/mfcc_direct_classification/outputs/comparison_metrics.csv`
+- `experiments/mfcc_direct_classification/outputs/comparison_summary.yaml`
+- `experiments/mfcc_direct_classification/outputs/comparison_report.md`
+
 ### 独立分类器脚本：`train_classifier_from_states.py`
 
 这个脚本不会重新跑储备池仿真。
@@ -289,6 +409,7 @@ python .\train_classifier_from_states.py --state-file data/processed/reservoir_s
 
 ```powershell
 python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz
+python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz --classifier nearest_centroid
 python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz --validation-ratio 0.25
 python .\train_classifier_from_states.py --state-file data/processed/reservoir_states.npz --model-path results/my_classifier.joblib --metrics-path results/my_metrics.yaml
 ```
@@ -306,6 +427,13 @@ python .\train_classifier_from_states.py --state-file data/processed/reservoir_s
 - 控制训练集/验证集切分的随机性
 - 默认值为 `7`
 - 示例：`--seed 7`
+
+`--classifier`
+
+- 指定读出器类型
+- 默认值为 `logistic_regression`
+- 支持：`logistic_regression`、`nearest_centroid`、`gaussian_nb`、`ridge_classifier`
+- 示例：`--classifier ridge_classifier`
 
 `--validation-ratio`
 
@@ -358,14 +486,52 @@ python .\train_classifier_from_states.py --state-file data/processed/reservoir_s
 - `results/classifier_confusion_matrix.png`：验证集混淆矩阵可视化
 - `results/classifier_validation_predictions.csv`：验证集逐样本预测结果
 - `results/models/*.npz`：可选，保存网络结构、突触权重、输入映射与内在偏置（通过 `--save-model` 生成，文件名自动追加时间戳）
+- `experiments/stp_ip_ablation/outputs/*/processed/reservoir_states.npz`：各消融条件的状态文件
+- `experiments/stp_ip_ablation/outputs/*/results/run_summary.yaml`：各消融条件的运行摘要
+- `experiments/stp_ip_ablation/outputs/comparison_metrics.csv`：消融实验关键指标汇总表
+- `experiments/stp_ip_ablation/outputs/comparison_report.md`：消融实验结果汇总报告
+- `experiments/stp_ip_ablation/outputs/readout_comparison/*`：基于已有 reservoir states 的多读出器对比结果
+- `experiments/mfcc_direct_classification/outputs/processed/mfcc_flat_features.npz`：直接 MFCC 展平特征缓存
+- `experiments/mfcc_direct_classification/outputs/results/tsne_emotion_clusters.png`：直接 MFCC 特征的 `t-SNE` 图
+- `experiments/mfcc_direct_classification/outputs/comparison_report.md`：直接 MFCC 与 reservoir baseline 的对比报告
+- `EXPERIMENT_RESULTS_ANALYSIS.md`：当前阶段实验结论、局限性与后续研究方向整理
 
 ## 说明
 
 - 当前实现默认保留跨样本的长期塑性（STDP + IP），并在每个样本前重置短期动力学状态。
+- `ExperimentConfig` 中新增了 `enable_stp` 与 `enable_intrinsic_plasticity` 开关，默认都为 `True`。
+- 若你需要做 `STP / IP` 消融，推荐直接使用 `experiments/stp_ip_ablation/run_ablation.py`，避免手工修改主流程代码。
 - 分类器默认使用当前运行得到的 `reservoir_states.npz` 同源状态向量进行训练，先做标准化，再训练多分类逻辑回归。
 - 若传入 `--load-model`，程序会加载已有模型；若只写 `--load-model` 不跟路径，则默认读取 `results/models/` 下最新模型；若不传，则从随机初始化的新模型开始运行。
 - 模型文件会保存关键动力学/可塑性配置的元信息，避免把不兼容的配置静默加载到旧模型上。
 - 若你后续需要接入岭回归或线性探针，可直接使用 `reservoir_states.npz` 的 `states` 与 `labels`。
+
+## 当前结论
+
+基于当前已经完成的 3 组实验，可以先得到一个阶段性结论：
+
+- 在当前 `TESS + 整句分类 + 全量样本 + 线性读出` 设定下，直接 MFCC 已经足够强。
+- `mfcc_direct + logistic_regression = 0.9929`，与 reservoir baseline `0.9946` 几乎相同。
+- `mfcc_direct + ridge_classifier = 0.9964`，甚至略高于 reservoir baseline。
+- `STP / IP` 消融里，`IP` 的影响明显大于 `STP`；去掉 `STP` 并没有带来稳定退化。
+- 因此，当前实验还不能证明储备池在这个任务设定下具有明确优势。
+
+但这不等价于“储备池没有研究价值”。更准确的说法是：
+
+- 当前任务对直接高信息量 MFCC 特征过于友好。
+- 当前评估方式还没有充分激发储备池在动态建模、时序记忆和鲁棒性方面的潜在优势。
+
+如果目标是继续研究储备池，下一步更建议做：
+
+- speaker-independent 或 cross-corpus 泛化
+- 加噪声、混响、通道扰动的鲁棒性评估
+- 小样本训练曲线
+- 压缩后的直接 MFCC 统计特征 vs reservoir 状态
+- 严格在线 / 流式识别
+
+更完整的分析见：
+
+- `EXPERIMENT_RESULTS_ANALYSIS.md`
 
 ## 运行结果报告
 
