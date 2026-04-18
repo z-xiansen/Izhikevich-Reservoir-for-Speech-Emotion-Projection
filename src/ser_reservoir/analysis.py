@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -11,7 +12,17 @@ from sklearn.preprocessing import StandardScaler
 from .config import ExperimentConfig
 
 
+@dataclass(slots=True, frozen=True)
+class TSNERunSummary:
+    embedding: np.ndarray
+    metadata: dict[str, float | int | str]
+
+
 def run_tsne(states: np.ndarray, cfg: ExperimentConfig) -> np.ndarray:
+    return run_tsne_with_metadata(states, cfg).embedding
+
+
+def run_tsne_with_metadata(states: np.ndarray, cfg: ExperimentConfig) -> TSNERunSummary:
     if states.ndim != 2:
         raise ValueError(f"State matrix must be 2D, got {states.shape}")
     n_samples = states.shape[0]
@@ -33,7 +44,26 @@ def run_tsne(states: np.ndarray, cfg: ExperimentConfig) -> np.ndarray:
         verbose=1 if cfg.verbose else 0,
     )
     embedding = tsne.fit_transform(z)
-    return embedding.astype(np.float32)
+    metadata = {
+        "n_samples": int(n_samples),
+        "input_dim": int(states.shape[1]),
+        "perplexity_requested": float(cfg.tsne_perplexity),
+        "perplexity_used": float(max_perplexity),
+        "learning_rate_requested": float(cfg.tsne_learning_rate),
+        "learning_rate_used": float(
+            getattr(tsne, "learning_rate_", cfg.tsne_learning_rate)
+        ),
+        "max_iter_requested": int(cfg.tsne_n_iter),
+        "n_iter_completed": int(getattr(tsne, "n_iter_", cfg.tsne_n_iter)),
+        "kl_divergence": float(getattr(tsne, "kl_divergence_", np.nan)),
+        "metric": str(tsne.metric),
+        "init": str(tsne.init),
+        "seed": int(cfg.seed),
+    }
+    return TSNERunSummary(
+        embedding=embedding.astype(np.float32),
+        metadata=metadata,
+    )
 
 
 def plot_embedding(
@@ -92,3 +122,19 @@ def save_states(
         paths=np.array(paths, dtype=object),
     )
 
+
+def save_tsne_embedding(
+    path: Path,
+    embedding: np.ndarray,
+    labels: list[str],
+    metadata: dict[str, float | int | str] | None = None,
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload: dict[str, np.ndarray] = {
+        "embedding": embedding.astype(np.float32),
+        "labels": np.array(labels, dtype=object),
+    }
+    if metadata:
+        for key, value in metadata.items():
+            payload[key] = np.array(value)
+    np.savez_compressed(path, **payload)

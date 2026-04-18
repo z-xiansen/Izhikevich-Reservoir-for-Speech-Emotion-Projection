@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import gcd
 from pathlib import Path
 from typing import Callable, Iterable
 
 import librosa
 import numpy as np
 import pyarrow.parquet as pq
+import soundfile as sf
 from huggingface_hub import snapshot_download
+from scipy.signal import resample_poly
 from tqdm import tqdm
 
 from .config import ExperimentConfig
@@ -24,6 +27,9 @@ _EMOTION_ALIAS = {
     "pleasantsurprise": "pleasant_surprise",
     "surprise": "pleasant_surprise",
 }
+
+RAW_WAVEFORM_TARGET_LENGTH = 10320
+RAW_WAVEFORM_INPUT_CHANNELS = 40
 
 
 @dataclass(slots=True, frozen=True)
@@ -108,6 +114,55 @@ def extract_mfcc(path: Path, cfg: ExperimentConfig) -> np.ndarray:
         win_length=cfg.win_length,
     )
     return _normalize_to_unit_interval(mfcc).astype(np.float32)
+
+
+def extract_raw_waveform_feature(
+    path: Path,
+    cfg: ExperimentConfig,
+    target_length: int = RAW_WAVEFORM_TARGET_LENGTH,
+) -> np.ndarray:
+    waveform, _ = _load_audio_mono_resampled(path, target_sr=cfg.sample_rate)
+    normalized = _peak_normalize_waveform(waveform)
+    resampled = _resample_1d_linear(normalized, target_length=target_length)
+    shifted = np.clip((resampled + 1.0) * 0.5, 0.0, 1.0)
+    return shifted.astype(np.float32, copy=False)
+
+
+def raw_waveform_feature_to_reservoir_input(
+    feature: np.ndarray,
+    input_channels: int = RAW_WAVEFORM_INPUT_CHANNELS,
+) -> np.ndarray:
+    flat = np.asarray(feature, dtype=np.float32).reshape(-1)
+    metadata = raw_waveform_feature_metadata(
+        target_length=int(flat.size),
+        input_channels=input_channels,
+    )
+    target_frames = metadata["target_frames"]
+    return flat.reshape(target_frames, input_channels).T.astype(np.float32, copy=False)
+
+
+def raw_waveform_feature_metadata(
+    target_length: int = RAW_WAVEFORM_TARGET_LENGTH,
+    input_channels: int = RAW_WAVEFORM_INPUT_CHANNELS,
+    sample_rate: int | None = None,
+) -> dict[str, int]:
+    if target_length <= 0:
+        raise ValueError(f"target_length must be positive, got {target_length}")
+    if input_channels <= 0:
+        raise ValueError(f"input_channels must be positive, got {input_channels}")
+    if target_length % input_channels != 0:
+        raise ValueError(
+            f"target_length={target_length} must be divisible by input_channels={input_channels}"
+        )
+
+    metadata = {
+        "target_length": int(target_length),
+        "input_channels": int(input_channels),
+        "target_frames": int(target_length // input_channels),
+    }
+    if sample_rate is not None:
+        metadata["sample_rate"] = int(sample_rate)
+    return metadata
 
 
 def parse_emotion_label(path: Path) -> str | None:
@@ -230,3 +285,49 @@ def _normalize_to_unit_interval(mfcc: np.ndarray) -> np.ndarray:
     row_max = mfcc.max(axis=1, keepdims=True)
     denom = np.maximum(row_max - row_min, 1e-8)
     return (mfcc - row_min) / denom
+
+
+def _peak_normalize_waveform(waveform: np.ndarray) -> np.ndarray:
+    arr = np.asarray(waveform, dtype=np.float32).reshape(-1)
+    if arr.size == 0:
+        raise ValueError("Waveform is empty.")
+
+    peak = float(np.max(np.abs(arr)))
+    if peak <= 1e-8:
+        return np.zeros_like(arr, dtype=np.float32)
+    return np.clip(arr / peak, -1.0, 1.0).astype(np.float32, copy=False)
+
+
+def _resample_1d_linear(signal: np.ndarray, target_length: int) -> np.ndarray:
+    if target_length <= 0:
+        raise ValueError(f"target_length must be positive, got {target_length}")
+
+    arr = np.asarray(signal, dtype=np.float32).reshape(-1)
+    if arr.size == 0:
+        raise ValueError("Signal is empty.")
+    if arr.size == target_length:
+        return arr.astype(np.float32, copy=True)
+    if arr.size == 1:
+        return np.full(target_length, float(arr[0]), dtype=np.float32)
+
+    xp = np.arange(arr.size, dtype=np.float32)
+    x_new = np.linspace(0.0, float(arr.size - 1), num=target_length, dtype=np.float32)
+    return np.interp(x_new, xp, arr).astype(np.float32)
+
+
+def _load_audio_mono_resampled(path: Path, target_sr: int) -> tuple[np.ndarray, int]:
+    waveform, src_sr = sf.read(str(path), dtype="float32")
+    arr = np.asarray(waveform, dtype=np.float32)
+    if arr.ndim > 1:
+        arr = arr.mean(axis=1)
+
+    if src_sr == target_sr:
+        return arr.astype(np.float32, copy=False), target_sr
+
+    factor = gcd(int(src_sr), int(target_sr))
+    resampled = resample_poly(
+        arr,
+        up=int(target_sr // factor),
+        down=int(src_sr // factor),
+    )
+    return np.asarray(resampled, dtype=np.float32), target_sr

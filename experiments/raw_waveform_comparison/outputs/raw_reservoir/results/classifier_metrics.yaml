@@ -1,0 +1,134 @@
+enabled: true
+classifier_kind: logistic_regression
+model_type: standardized_logistic_regression
+train_samples: 2240
+validation_samples: 560
+train_distribution:
+  angry: 320
+  disgust: 320
+  fear: 320
+  happy: 320
+  neutral: 320
+  pleasant_surprise: 320
+  sad: 320
+validation_distribution:
+  angry: 80
+  disgust: 80
+  fear: 80
+  happy: 80
+  neutral: 80
+  pleasant_surprise: 80
+  sad: 80
+validation_accuracy: 0.8678571428571429
+validation_balanced_accuracy: 0.8678571428571428
+validation_macro_f1: 0.867986537120249
+per_class_metrics:
+  angry:
+    precision: 0.9875
+    recall: 0.9875
+    f1-score: 0.9875
+    support: 80.0
+  disgust:
+    precision: 0.9367088607594937
+    recall: 0.925
+    f1-score: 0.9308176100628931
+    support: 80.0
+  fear:
+    precision: 0.8734177215189873
+    recall: 0.8625
+    f1-score: 0.8679245283018868
+    support: 80.0
+  happy:
+    precision: 0.7901234567901234
+    recall: 0.8
+    f1-score: 0.7950310559006211
+    support: 80.0
+  neutral:
+    precision: 0.8023255813953488
+    recall: 0.8625
+    f1-score: 0.8313253012048193
+    support: 80.0
+  pleasant_surprise:
+    precision: 0.8181818181818182
+    recall: 0.7875
+    f1-score: 0.802547770700637
+    support: 80.0
+  sad:
+    precision: 0.8717948717948718
+    recall: 0.85
+    f1-score: 0.8607594936708861
+    support: 80.0
+  accuracy: 0.8678571428571429
+  macro avg:
+    precision: 0.8685789014915203
+    recall: 0.8678571428571428
+    f1-score: 0.867986537120249
+    support: 560.0
+  weighted avg:
+    precision: 0.8685789014915205
+    recall: 0.8678571428571429
+    f1-score: 0.8679865371202492
+    support: 560.0
+labels:
+- angry
+- disgust
+- fear
+- happy
+- neutral
+- pleasant_surprise
+- sad
+confusion_matrix:
+- - 79
+  - 1
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+- - 1
+  - 74
+  - 5
+  - 0
+  - 0
+  - 0
+  - 0
+- - 0
+  - 1
+  - 69
+  - 9
+  - 1
+  - 0
+  - 0
+- - 0
+  - 3
+  - 5
+  - 64
+  - 4
+  - 0
+  - 4
+- - 0
+  - 0
+  - 0
+  - 5
+  - 69
+  - 5
+  - 1
+- - 0
+  - 0
+  - 0
+  - 3
+  - 9
+  - 63
+  - 5
+- - 0
+  - 0
+  - 0
+  - 0
+  - 3
+  - 9
+  - 68
+outputs:
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\classifier_model.joblib
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\classifier_metrics.yaml
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\classifier_validation_predictions.csv

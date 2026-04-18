@@ -1,0 +1,105 @@
+settings:
+  seed: 7
+  validation_ratio: 0.2
+  classifier: logistic_regression
+  frame_repeat: 2
+  input_gain: 14.0
+  max_samples: null
+  max_samples_per_emotion: null
+  use_full_dataset: true
+feature_metadata:
+  dataset_root: G:\Izhikevich Reservoir for Speech Emotion Projection\data\raw\TESS
+  n_samples: 2800
+  feature_dim: 10320
+  sample_rate: 22050
+  target_length: 10320
+  input_channels: 40
+  target_frames: 258
+  selection_seed: 7
+  max_samples: null
+  max_samples_per_emotion: null
+  cache_source: loaded
+outputs:
+  feature_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\processed\raw_waveform_flat_features.npz
+  split_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\processed\split_indices.npz
+  comparison_csv: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\comparison_metrics.csv
+  comparison_yaml: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\comparison_summary.yaml
+  comparison_report: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\comparison_report.md
+  tsne_outputs:
+    raw_direct:
+      tsne_embedding_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\processed\raw_direct_tsne_embedding.npz
+      tsne_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_direct\results\tsne_emotion_clusters.png
+      tsne_metadata:
+        n_samples: 2800
+        input_dim: 10320
+        perplexity_requested: 30.0
+        perplexity_used: 30.0
+        learning_rate_requested: 200.0
+        learning_rate_used: 200.0
+        max_iter_requested: 1200
+        n_iter_completed: 1199
+        kl_divergence: 3.9707140922546387
+        metric: euclidean
+        init: pca
+        seed: 7
+    raw_reservoir:
+      tsne_embedding_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\processed\raw_reservoir_tsne_embedding.npz
+      tsne_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\tsne_emotion_clusters.png
+      tsne_metadata:
+        n_samples: 2800
+        input_dim: 800
+        perplexity_requested: 30.0
+        perplexity_used: 30.0
+        learning_rate_requested: 200.0
+        learning_rate_used: 200.0
+        max_iter_requested: 1200
+        n_iter_completed: 1199
+        kl_divergence: 1.9566401243209839
+        metric: euclidean
+        init: pca
+        seed: 7
+split:
+  train_size: 2240
+  validation_size: 560
+results:
+- experiment: raw_direct
+  classifier_kind: logistic_regression
+  model_type: standardized_logistic_regression
+  input_representation: raw_waveform_flat_10320
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.24107142857142858
+  validation_balanced_accuracy: 0.24107142857142858
+  validation_macro_f1: 0.2412456618273997
+  delta_accuracy_vs_raw_direct: 0.0
+  delta_balanced_accuracy_vs_raw_direct: 0.0
+  delta_macro_f1_vs_raw_direct: 0.0
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_direct\results\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_direct\results\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_direct\results\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_direct\results\classifier_validation_predictions.csv
+  feature_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\processed\raw_waveform_flat_features.npz
+  state_file: null
+- experiment: raw_reservoir
+  classifier_kind: logistic_regression
+  model_type: standardized_logistic_regression
+  input_representation: raw_waveform_40x258_to_reservoir_800d_state
+  train_samples: 2240
+  validation_samples: 560
+  validation_accuracy: 0.8678571428571429
+  validation_balanced_accuracy: 0.8678571428571428
+  validation_macro_f1: 0.867986537120249
+  delta_accuracy_vs_raw_direct: 0.6267857142857143
+  delta_balanced_accuracy_vs_raw_direct: 0.6267857142857142
+  delta_macro_f1_vs_raw_direct: 0.6267408752928493
+  classifier_metrics: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\classifier_metrics.yaml
+  classifier_model: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\classifier_model.joblib
+  confusion_matrix_plot: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\classifier_confusion_matrix.png
+  validation_predictions: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\results\classifier_validation_predictions.csv
+  feature_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\processed\raw_waveform_flat_features.npz
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\processed\reservoir_states.npz
+raw_reservoir_summary:
+  state_file: G:\Izhikevich Reservoir for Speech Emotion Projection\experiments\raw_waveform_comparison\outputs\raw_reservoir\processed\reservoir_states.npz
+  num_state_features: 800
+  mean_global_firing_rate: 0.009343423150837355
+  std_global_firing_rate: 0.0015166386619136344

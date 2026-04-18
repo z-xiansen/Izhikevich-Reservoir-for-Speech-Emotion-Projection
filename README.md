@@ -49,6 +49,10 @@
 │     ├─ README.md
 │     ├─ run_experiment.py
 │     └─ outputs/
+│  └─ raw_waveform_comparison/
+│     ├─ README.md
+│     ├─ run_experiment.py
+│     └─ outputs/
 ├─ src/ser_reservoir
 │  ├─ config.py
 │  ├─ data.py
@@ -127,6 +131,7 @@ $env:KAGGLE_KEY="your_api_key"
 - `experiments/stp_ip_ablation/run_readout_comparison.py`：直接读取各条件已保存的 `reservoir_states.npz`，比较多个分类读出器
 - `experiments/mfcc_direct_classification/run_experiment.py`：不经过储备池，直接用 MFCC 特征比较多个分类器，并与 reservoir baseline 对照
 - `experiments/mfcc_direct_classification/plot_tsne.py`：直接基于已缓存的 MFCC 特征生成 `t-SNE` 情绪聚类图
+- `experiments/raw_waveform_comparison/run_experiment.py`：不加 MFCC，直接比较原始波形直连分类器与原始波形经过储备池后的结果
 
 如果你想先查看脚本支持哪些参数，可以直接运行：
 
@@ -137,6 +142,7 @@ python .\experiments\stp_ip_ablation\run_ablation.py --help
 python .\experiments\stp_ip_ablation\run_readout_comparison.py --help
 python .\experiments\mfcc_direct_classification\run_experiment.py --help
 python .\experiments\mfcc_direct_classification\plot_tsne.py --help
+python .\experiments\raw_waveform_comparison\run_experiment.py --help
 ```
 
 说明：
@@ -382,6 +388,46 @@ python .\experiments\mfcc_direct_classification\plot_tsne.py
 - `experiments/mfcc_direct_classification/outputs/comparison_summary.yaml`
 - `experiments/mfcc_direct_classification/outputs/comparison_report.md`
 
+### 原始波形直连 vs 原始波形 + 储备池：`experiments/raw_waveform_comparison/run_experiment.py`
+
+这个脚本不使用 `MFCC`，而是直接把每条语音转成固定长度原始波形向量，然后比较：
+
+- `raw_direct`：`10320` 维原始波形直接送分类器
+- `raw_reservoir`：同一条原始波形 reshape 成 `40 x 258` 输入矩阵，再送入 reservoir，最后对 `800` 维状态向量分类
+- 默认还会为这两条实验线分别生成一张 `t-SNE` 图
+
+原始波形输入规则固定为：
+
+- `soundfile.read` 读取音频并下混成 mono
+- 用 polyphase 重采样统一到 `22050 Hz`
+- 峰值归一化到 `[-1, 1]`
+- 线性重采样到固定长度 `10320`
+- 平移到 `[0, 1]`
+
+常用命令如下：
+
+```powershell
+python .\experiments\raw_waveform_comparison\run_experiment.py
+python .\experiments\raw_waveform_comparison\run_experiment.py --max-samples 28 --max-per-emotion 4 --quiet
+python .\experiments\raw_waveform_comparison\run_experiment.py --refresh-features
+python .\experiments\raw_waveform_comparison\run_experiment.py --skip-tsne
+```
+
+结果会保存到：
+
+- `experiments/raw_waveform_comparison/outputs/processed/raw_waveform_flat_features.npz`
+- `experiments/raw_waveform_comparison/outputs/processed/split_indices.npz`
+- `experiments/raw_waveform_comparison/outputs/processed/raw_direct_tsne_embedding.npz`
+- `experiments/raw_waveform_comparison/outputs/processed/raw_reservoir_tsne_embedding.npz`
+- `experiments/raw_waveform_comparison/outputs/raw_direct/results/`
+- `experiments/raw_waveform_comparison/outputs/raw_reservoir/processed/reservoir_states.npz`
+- `experiments/raw_waveform_comparison/outputs/raw_reservoir/results/`
+- `experiments/raw_waveform_comparison/outputs/raw_direct/results/tsne_emotion_clusters.png`
+- `experiments/raw_waveform_comparison/outputs/raw_reservoir/results/tsne_emotion_clusters.png`
+- `experiments/raw_waveform_comparison/outputs/comparison_metrics.csv`
+- `experiments/raw_waveform_comparison/outputs/comparison_summary.yaml`
+- `experiments/raw_waveform_comparison/outputs/comparison_report.md`
+
 ### 独立分类器脚本：`train_classifier_from_states.py`
 
 这个脚本不会重新跑储备池仿真。
@@ -494,6 +540,14 @@ python .\train_classifier_from_states.py --state-file data/processed/reservoir_s
 - `experiments/mfcc_direct_classification/outputs/processed/mfcc_flat_features.npz`：直接 MFCC 展平特征缓存
 - `experiments/mfcc_direct_classification/outputs/results/tsne_emotion_clusters.png`：直接 MFCC 特征的 `t-SNE` 图
 - `experiments/mfcc_direct_classification/outputs/comparison_report.md`：直接 MFCC 与 reservoir baseline 的对比报告
+- `experiments/raw_waveform_comparison/outputs/processed/raw_waveform_flat_features.npz`：固定长度原始波形特征缓存
+- `experiments/raw_waveform_comparison/outputs/processed/split_indices.npz`：`raw_direct` 与 `raw_reservoir` 共享的分层切分索引
+- `experiments/raw_waveform_comparison/outputs/processed/raw_direct_tsne_embedding.npz`：原始波形直连分类器对应的 `t-SNE` 嵌入
+- `experiments/raw_waveform_comparison/outputs/processed/raw_reservoir_tsne_embedding.npz`：原始波形 + reservoir 对应的 `t-SNE` 嵌入
+- `experiments/raw_waveform_comparison/outputs/raw_direct/results/tsne_emotion_clusters.png`：原始波形直连分类器的 `t-SNE` 图
+- `experiments/raw_waveform_comparison/outputs/raw_reservoir/results/tsne_emotion_clusters.png`：原始波形 + reservoir 的 `t-SNE` 图
+- `experiments/raw_waveform_comparison/outputs/raw_reservoir/processed/reservoir_states.npz`：原始波形送入 reservoir 后得到的状态文件
+- `experiments/raw_waveform_comparison/outputs/comparison_report.md`：原始波形直连与原始波形 + reservoir 的对比报告
 - `EXPERIMENT_RESULTS_ANALYSIS.md`：当前阶段实验结论、局限性与后续研究方向整理
 
 ## 说明
